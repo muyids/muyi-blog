@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>双指针</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "11", "link": "https://leetcode.cn/problems/container-with-most-water/", "name": "11. 盛最多水的容器"}, {"frontId": "15", "link": "https://leetcode.cn/problems/3sum/", "name": "15. 三数之和"}, {"frontId": "16", "link": "https://leetcode.cn/problems/3sum-closest/", "name": "16. 最接近的三数之和"}, {"frontId": "18", "link": "https://leetcode.cn/problems/4sum/", "name": "18. 四数之和"}, {"frontId": "19", "link": "https://leetcode.cn/problems/remove-nth-node-from-end-of-list/", "name": "19. 删除链表的倒数第 N 个结点"}, {"frontId": "26", "link": "https://leetcode.cn/problems/remove-duplicates-from-sorted-array/", "name": "26. 删除有序数组中的重复项"}, {"frontId": "27", "link": "https://leetcode.cn/problems/remove-element/", "name": "27. 移除元素"}, {"frontId": "28", "link": "https://leetcode.cn/problems/find-the-index-of-the-first-occurrence-in-a-string/", "name": "28. 实现 strStr()"}, {"frontId": "31", "link": "https://leetcode.cn/problems/next-permutation/", "name": "31. 下一个排列"}, {"frontId": "42", "link": "https://leetcode.cn/problems/trapping-rain-water/", "name": "42. 接雨水"}, {"frontId": "61", "link": "https://leetcode.cn/problems/rotate-list/", "name": "61. 旋转链表"}, {"frontId": "75", "link": "https://leetcode.cn/problems/sort-colors/", "name": "75. 颜色分类"}, {"frontId": "80", "link": "https://leetcode.cn/problems/remove-duplicates-from-sorted-array-ii/", "name": "80. 删除有序数组中的重复项 II"}, {"frontId": "82", "link": "https://leetcode.cn/problems/remove-duplicates-from-sorted-list-ii/", "name": "82. 删除排序链表中的重复元素 II"}, {"frontId": "86", "link": "https://leetcode.cn/problems/partition-list/", "name": "86. 分隔链表"}, {"frontId": "88", "link": "https://leetcode.cn/problems/merge-sorted-array/", "name": "88. 合并两个有序数组"}, {"frontId": "125", "link": "https://leetcode.cn/problems/valid-palindrome/", "name": "125. 验证回文串"}, {"frontId": "141", "link": "https://leetcode.cn/problems/linked-list-cycle/", "name": "141. 环形链表"}, {"frontId": "142", "link": "https://leetcode.cn/problems/linked-list-cycle-ii/", "name": "142. 环形链表 II"}, {"frontId": "143", "link": "https://leetcode.cn/problems/reorder-list/", "name": "143. 重排链表"}, {"frontId": "443", "link": "https://leetcode.cn/problems/string-compression/", "name": "443. 压缩字符串"}, {"frontId": "457", "link": "https://leetcode.cn/problems/circular-array-loop/", "name": "457. 环形数组是否存在循环"}, {"frontId": "481", "link": "https://leetcode.cn/problems/magical-string/", "name": "481. 神奇字符串"}, {"frontId": "522", "link": "https://leetcode.cn/problems/longest-uncommon-subsequence-ii/", "name": "522. 最长特殊序列 II"}, {"frontId": "524", "link": "https://leetcode.cn/problems/longest-word-in-dictionary-through-deleting/", "name": "524. 通过删除字母匹配到字典里最长单词"}, {"frontId": "1721", "link": "https://leetcode.cn/problems/swapping-nodes-in-a-linked-list/", "name": "1721. 交换链表中的节点"}, {"frontId": "532", "link": "https://leetcode.cn/problems/k-diff-pairs-in-an-array/", "name": "532. 数组中的 k-diff 数对"}, {"frontId": "611", "link": "https://leetcode.cn/problems/valid-triangle-number/", "name": "611. 有效三角形的个数"}, {"frontId": "696", "link": "https://leetcode.cn/problems/count-binary-substrings/", "name": "696. 计数二进制子串"}, {"frontId": "719", "link": "https://leetcode.cn/problems/find-k-th-smallest-pair-distance/", "name": "719. 找出第 K 小的数对距离"}], "links": []}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

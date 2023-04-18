@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>排序</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "15", "link": "https://leetcode.cn/problems/3sum/", "name": "15. 三数之和"}, {"frontId": "16", "link": "https://leetcode.cn/problems/3sum-closest/", "name": "16. 最接近的三数之和"}, {"frontId": "18", "link": "https://leetcode.cn/problems/4sum/", "name": "18. 四数之和"}, {"frontId": "49", "link": "https://leetcode.cn/problems/group-anagrams/", "name": "49. 字母异位词分组"}, {"frontId": "56", "link": "https://leetcode.cn/problems/merge-intervals/", "name": "56. 合并区间"}, {"frontId": "75", "link": "https://leetcode.cn/problems/sort-colors/", "name": "75. 颜色分类"}, {"frontId": "88", "link": "https://leetcode.cn/problems/merge-sorted-array/", "name": "88. 合并两个有序数组"}, {"frontId": "147", "link": "https://leetcode.cn/problems/insertion-sort-list/", "name": "147. 对链表进行插入排序"}, {"frontId": "148", "link": "https://leetcode.cn/problems/sort-list/", "name": "148. 排序链表"}, {"frontId": "164", "link": "https://leetcode.cn/problems/maximum-gap/", "name": "164. 最大间距"}, {"frontId": "169", "link": "https://leetcode.cn/problems/majority-element/", "name": "169. 多数元素"}, {"frontId": "179", "link": "https://leetcode.cn/problems/largest-number/", "name": "179. 最大数"}, {"frontId": "215", "link": "https://leetcode.cn/problems/kth-largest-element-in-an-array/", "name": "215. 数组中的第K个最大元素"}, {"frontId": "217", "link": "https://leetcode.cn/problems/contains-duplicate/", "name": "217. 存在重复元素"}, {"frontId": "220", "link": "https://leetcode.cn/problems/contains-duplicate-iii/", "name": "220. 存在重复元素 III"}, {"frontId": "229", "link": "https://leetcode.cn/problems/majority-element-ii/", "name": "229. 多数元素 II"}, {"frontId": "242", "link": "https://leetcode.cn/problems/valid-anagram/", "name": "242. 有效的字母异位词"}, {"frontId": "268", "link": "https://leetcode.cn/problems/missing-number/", "name": "268. 丢失的数字"}, {"frontId": "295", "link": "https://leetcode.cn/problems/find-median-from-data-stream/", "name": "295. 数据流的中位数"}, {"frontId": "347", "link": "https://leetcode.cn/problems/top-k-frequent-elements/", "name": "347. 前 K 个高频元素"}, {"frontId": "274", "link": "https://leetcode.cn/problems/h-index/", "name": "274. H 指数"}, {"frontId": "324", "link": "https://leetcode.cn/problems/wiggle-sort-ii/", "name": "324. 摆动排序 II"}, {"frontId": "506", "link": "https://leetcode.cn/problems/relative-ranks/", "name": "506. 相对名次"}, {"frontId": "522", "link": "https://leetcode.cn/problems/longest-uncommon-subsequence-ii/", "name": "522. 最长特殊序列 II"}, {"frontId": "524", "link": "https://leetcode.cn/problems/longest-word-in-dictionary-through-deleting/", "name": "524. 通过删除字母匹配到字典里最长单词"}, {"frontId": "532", "link": "https://leetcode.cn/problems/k-diff-pairs-in-an-array/", "name": "532. 数组中的 k-diff 数对"}, {"frontId": "611", "link": "https://leetcode.cn/problems/valid-triangle-number/", "name": "611. 有效三角形的个数"}, {"frontId": "646", "link": "https://leetcode.cn/problems/maximum-length-of-pair-chain/", "name": "646. 最长数对链"}, {"frontId": "719", "link": "https://leetcode.cn/problems/find-k-th-smallest-pair-distance/", "name": "719. 找出第 K 小的数对距离"}, {"frontId": "747", "link": "https://leetcode.cn/problems/largest-number-at-least-twice-of-others/", "name": "747. 至少是其他数字两倍的最大数"}, {"frontId": "912", "link": "https://leetcode.cn/problems/sort-an-array/", "name": "912. 排序数组"}, {"frontId": "493", "link": "https://leetcode.cn/problems/reverse-pairs/", "name": "493. 翻转对"}, {"frontId": "1122", "link": "https://leetcode.cn/problems/relative-sort-array/", "name": "1122. 数组的相对排序"}, {"frontId": "315", "link": "https://leetcode.cn/problems/count-of-smaller-numbers-after-self/", "name": "315. 计算右侧小于当前元素的个数"}, {"frontId": "327", "link": "https://leetcode.cn/problems/count-of-range-sum/", "name": "327. 区间和的个数"}, {"frontId": "252", "link": "https://leetcode.cn/problems/meeting-rooms/", "name": "252. 会议室"}, {"frontId": "786", "link": "https://leetcode.cn/problems/k-th-smallest-prime-fraction/", "name": "786. 第 K 个最小的素数分数"}], "links": [{"source": "912. 排序数组", "target": "215. 数组中的第K个最大元素"}, {"source": "912. 排序数组", "target": "15. 三数之和"}, {"source": "912. 排序数组", "target": "493. 翻转对"}, {"source": "912. 排序数组", "target": "1122. 数组的相对排序"}, {"source": "1122. 数组的相对排序", "target": "164. 最大间距"}, {"source": "493. 翻转对", "target": "315. 计算右侧小于当前元素的个数"}, {"source": "315. 计算右侧小于当前元素的个数", "target": "327. 区间和的个数"}, {"source": "912. 排序数组", "target": "56. 合并区间"}, {"source": "56. 合并区间", "target": "252. 会议室"}, {"source": "56. 合并区间", "target": "295. 数据流的中位数"}, {"source": "215. 数组中的第K个最大元素", "target": "786. 第 K 个最小的素数分数"}, {"source": "786. 第 K 个最小的素数分数", "target": "719. 找出第 K 小的数对距离"}, {"source": "15. 三数之和", "target": "18. 四数之和"}, {"source": "15. 三数之和", "target": "16. 最接近的三数之和"}, {"source": "215. 数组中的第K个最大元素", "target": "347. 前 K 个高频元素"}]}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

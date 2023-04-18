@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>图</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "133", "link": "https://leetcode.cn/problems/clone-graph/", "name": "133. 克隆图"}, {"frontId": "207", "link": "https://leetcode.cn/problems/course-schedule/", "name": "207. 课程表"}, {"frontId": "210", "link": "https://leetcode.cn/problems/course-schedule-ii/", "name": "210. 课程表 II"}, {"frontId": "310", "link": "https://leetcode.cn/problems/minimum-height-trees/", "name": "310. 最小高度树"}, {"frontId": "329", "link": "https://leetcode.cn/problems/longest-increasing-path-in-a-matrix/", "name": "329. 矩阵中的最长递增路径"}, {"frontId": "399", "link": "https://leetcode.cn/problems/evaluate-division/", "name": "399. 除法求值"}, {"frontId": "547", "link": "https://leetcode.cn/problems/number-of-provinces/", "name": "547. 省份数量"}, {"frontId": "684", "link": "https://leetcode.cn/problems/redundant-connection/", "name": "684. 冗余连接"}, {"frontId": "685", "link": "https://leetcode.cn/problems/redundant-connection-ii/", "name": "685. 冗余连接 II"}, {"frontId": "743", "link": "https://leetcode.cn/problems/network-delay-time/", "name": "743. 网络延迟时间"}, {"frontId": "765", "link": "https://leetcode.cn/problems/couples-holding-hands/", "name": "765. 情侣牵手"}, {"frontId": "785", "link": "https://leetcode.cn/problems/is-graph-bipartite/", "name": "785. 判断二分图"}, {"frontId": "787", "link": "https://leetcode.cn/problems/cheapest-flights-within-k-stops/", "name": "787. K 站中转内最便宜的航班"}, {"frontId": "802", "link": "https://leetcode.cn/problems/find-eventual-safe-states/", "name": "802. 找到最终的安全状态"}, {"frontId": "834", "link": "https://leetcode.cn/problems/sum-of-distances-in-tree/", "name": "834. 树中距离之和"}, {"frontId": "841", "link": "https://leetcode.cn/problems/keys-and-rooms/", "name": "841. 钥匙和房间"}, {"frontId": "851", "link": "https://leetcode.cn/problems/loud-and-rich/", "name": "851. 喧闹和富有"}, {"frontId": "886", "link": "https://leetcode.cn/problems/possible-bipartition/", "name": "886. 可能的二分法"}, {"frontId": "947", "link": "https://leetcode.cn/problems/most-stones-removed-with-same-row-or-column/", "name": "947. 移除最多的同行或同列石头"}, {"frontId": "959", "link": "https://leetcode.cn/problems/regions-cut-by-slashes/", "name": "959. 由斜杠划分区域"}, {"frontId": "332", "link": "https://leetcode.cn/problems/reconstruct-itinerary/", "name": "332. 重新安排行程"}, {"frontId": "753", "link": "https://leetcode.cn/problems/cracking-the-safe/", "name": "753. 破解保险箱"}, {"frontId": "797", "link": "https://leetcode.cn/problems/all-paths-from-source-to-target/", "name": "797. 所有可能的路径"}, {"frontId": "847", "link": "https://leetcode.cn/problems/shortest-path-visiting-all-nodes/", "name": "847. 访问所有节点的最短路径"}, {"frontId": "882", "link": "https://leetcode.cn/problems/reachable-nodes-in-subdivided-graph/", "name": "882. 细分图中的可到达结点"}, {"frontId": "913", "link": "https://leetcode.cn/problems/cat-and-mouse/", "name": "913. 猫和老鼠"}, {"frontId": "1632", "link": "https://leetcode.cn/problems/rank-transform-of-a-matrix/", "name": "1632. 矩阵转换后的秩"}, {"frontId": "1192", "link": "https://leetcode.cn/problems/critical-connections-in-a-network/", "name": "1192. 查找集群内的「关键连接」"}, {"frontId": "1203", "link": "https://leetcode.cn/problems/sort-items-by-groups-respecting-dependencies/", "name": "1203. 项目管理"}, {"frontId": "1916", "link": "https://leetcode.cn/problems/count-ways-to-build-rooms-in-an-ant-colony/", "name": "1916. 统计为蚁群构筑房间的不同顺序"}], "links": []}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

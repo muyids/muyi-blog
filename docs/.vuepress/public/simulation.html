@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>模拟</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "43", "link": "https://leetcode.cn/problems/multiply-strings/", "name": "43. 字符串相乘"}, {"frontId": "54", "link": "https://leetcode.cn/problems/spiral-matrix/", "name": "54. 螺旋矩阵"}, {"frontId": "59", "link": "https://leetcode.cn/problems/spiral-matrix-ii/", "name": "59. 螺旋矩阵 II"}, {"frontId": "67", "link": "https://leetcode.cn/problems/add-binary/", "name": "67. 二进制求和"}, {"frontId": "68", "link": "https://leetcode.cn/problems/text-justification/", "name": "68. 文本左右对齐"}, {"frontId": "258", "link": "https://leetcode.cn/problems/add-digits/", "name": "258. 各位相加"}, {"frontId": "289", "link": "https://leetcode.cn/problems/game-of-life/", "name": "289. 生命游戏"}, {"frontId": "412", "link": "https://leetcode.cn/problems/fizz-buzz/", "name": "412. Fizz Buzz"}, {"frontId": "415", "link": "https://leetcode.cn/problems/add-strings/", "name": "415. 字符串相加"}, {"frontId": "495", "link": "https://leetcode.cn/problems/teemo-attacking/", "name": "495. 提莫攻击"}, {"frontId": "498", "link": "https://leetcode.cn/problems/diagonal-traverse/", "name": "498. 对角线遍历"}, {"frontId": "566", "link": "https://leetcode.cn/problems/reshape-the-matrix/", "name": "566. 重塑矩阵"}, {"frontId": "592", "link": "https://leetcode.cn/problems/fraction-addition-and-subtraction/", "name": "592. 分数加减运算"}, {"frontId": "640", "link": "https://leetcode.cn/problems/solve-the-equation/", "name": "640. 求解方程"}, {"frontId": "657", "link": "https://leetcode.cn/problems/robot-return-to-origin/", "name": "657. 机器人能否返回原点"}, {"frontId": "682", "link": "https://leetcode.cn/problems/baseball-game/", "name": "682. 棒球比赛"}, {"frontId": "832", "link": "https://leetcode.cn/problems/flipping-an-image/", "name": "832. 翻转图像"}, {"frontId": "844", "link": "https://leetcode.cn/problems/backspace-string-compare/", "name": "844. 比较含退格的字符串"}, {"frontId": "867", "link": "https://leetcode.cn/problems/transpose-matrix/", "name": "867. 转置矩阵"}, {"frontId": "885", "link": "https://leetcode.cn/problems/spiral-matrix-iii/", "name": "885. 螺旋矩阵 III"}, {"frontId": "537", "link": "https://leetcode.cn/problems/complex-number-multiplication/", "name": "537. 复数乘法"}, {"frontId": "749", "link": "https://leetcode.cn/problems/contain-virus/", "name": "749. 隔离病毒"}, {"frontId": "874", "link": "https://leetcode.cn/problems/walking-robot-simulation/", "name": "874. 模拟行走机器人"}, {"frontId": "950", "link": "https://leetcode.cn/problems/reveal-cards-in-increasing-order/", "name": "950. 按递增顺序显示卡牌"}, {"frontId": "1006", "link": "https://leetcode.cn/problems/clumsy-factorial/", "name": "1006. 笨阶乘"}, {"frontId": "1041", "link": "https://leetcode.cn/problems/robot-bounded-in-circle/", "name": "1041. 困于环中的机器人"}, {"frontId": "2201", "link": "https://leetcode.cn/problems/count-artifacts-that-can-be-extracted/", "name": "2201. 统计可以提取的工件"}, {"frontId": "1706", "link": "https://leetcode.cn/problems/where-will-the-ball-fall/", "name": "1706. 球会落何处"}, {"frontId": "1252", "link": "https://leetcode.cn/problems/cells-with-odd-values-in-a-matrix/", "name": "1252. 奇数值单元格的数目"}, {"frontId": "2303", "link": "https://leetcode.cn/problems/calculate-amount-paid-in-taxes/", "name": "2303. 计算应缴税款总额"}], "links": []}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

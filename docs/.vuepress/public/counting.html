@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>计数</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "169", "link": "https://leetcode.cn/problems/majority-element/", "name": "169. 多数元素"}, {"frontId": "229", "link": "https://leetcode.cn/problems/majority-element-ii/", "name": "229. 多数元素 II"}, {"frontId": "299", "link": "https://leetcode.cn/problems/bulls-and-cows/", "name": "299. 猜数字游戏"}, {"frontId": "347", "link": "https://leetcode.cn/problems/top-k-frequent-elements/", "name": "347. 前 K 个高频元素"}, {"frontId": "383", "link": "https://leetcode.cn/problems/ransom-note/", "name": "383. 赎金信"}, {"frontId": "387", "link": "https://leetcode.cn/problems/first-unique-character-in-a-string/", "name": "387. 字符串中的第一个唯一字符"}, {"frontId": "451", "link": "https://leetcode.cn/problems/sort-characters-by-frequency/", "name": "451. 根据字符出现频率排序"}, {"frontId": "621", "link": "https://leetcode.cn/problems/task-scheduler/", "name": "621. 任务调度器"}, {"frontId": "692", "link": "https://leetcode.cn/problems/top-k-frequent-words/", "name": "692. 前K个高频单词"}, {"frontId": "811", "link": "https://leetcode.cn/problems/subdomain-visit-count/", "name": "811. 子域名访问计数"}, {"frontId": "869", "link": "https://leetcode.cn/problems/reordered-power-of-2/", "name": "869. 重新排序得到 2 的幂"}, {"frontId": "900", "link": "https://leetcode.cn/problems/rle-iterator/", "name": "900. RLE 迭代器"}, {"frontId": "914", "link": "https://leetcode.cn/problems/x-of-a-kind-in-a-deck-of-cards/", "name": "914. 卡牌分组"}, {"frontId": "945", "link": "https://leetcode.cn/problems/minimum-increment-to-make-array-unique/", "name": "945. 使数组唯一的最小增量"}, {"frontId": "1128", "link": "https://leetcode.cn/problems/number-of-equivalent-domino-pairs/", "name": "1128. 等价多米诺骨牌对的数量"}, {"frontId": "1189", "link": "https://leetcode.cn/problems/maximum-number-of-balloons/", "name": "1189. “气球” 的最大数量"}, {"frontId": "1221", "link": "https://leetcode.cn/problems/split-a-string-in-balanced-strings/", "name": "1221. 分割平衡字符串"}, {"frontId": "1267", "link": "https://leetcode.cn/problems/count-servers-that-communicate/", "name": "1267. 统计参与通信的服务器"}, {"frontId": "1356", "link": "https://leetcode.cn/problems/sort-integers-by-the-number-of-1-bits/", "name": "1356. 根据数字二进制下 1 的数目排序"}, {"frontId": "1347", "link": "https://leetcode.cn/problems/minimum-number-of-steps-to-make-two-strings-anagram/", "name": "1347. 制造字母异位词的最小步骤数"}, {"frontId": "767", "link": "https://leetcode.cn/problems/reorganize-string/", "name": "767. 重构字符串"}, {"frontId": "819", "link": "https://leetcode.cn/problems/most-common-word/", "name": "819. 最常见的单词"}, {"frontId": "923", "link": "https://leetcode.cn/problems/3sum-with-multiplicity/", "name": "923. 三数之和的多种可能"}, {"frontId": "992", "link": "https://leetcode.cn/problems/subarrays-with-k-different-integers/", "name": "992. K 个不同整数的子数组"}, {"frontId": "1010", "link": "https://leetcode.cn/problems/pairs-of-songs-with-total-durations-divisible-by-60/", "name": "1010. 总持续时间可被 60 整除的歌曲"}, {"frontId": "1054", "link": "https://leetcode.cn/problems/distant-barcodes/", "name": "1054. 距离相等的条形码"}, {"frontId": "1090", "link": "https://leetcode.cn/problems/largest-values-from-labels/", "name": "1090. 受标签影响的最大值"}, {"frontId": "2225", "link": "https://leetcode.cn/problems/find-players-with-zero-or-one-losses/", "name": "2225. 找出输掉零场或一场比赛的玩家"}, {"frontId": "1481", "link": "https://leetcode.cn/problems/least-number-of-unique-integers-after-k-removals/", "name": "1481. 不同整数的最少数目"}, {"frontId": "1497", "link": "https://leetcode.cn/problems/check-if-array-pairs-are-divisible-by-k/", "name": "1497. 检查数组对是否可以被 k 整除"}], "links": []}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>字符串</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "3", "link": "https://leetcode.cn/problems/longest-substring-without-repeating-characters/", "name": "3. 无重复字符的最长子串"}, {"frontId": "5", "link": "https://leetcode.cn/problems/longest-palindromic-substring/", "name": "5. 最长回文子串"}, {"frontId": "6", "link": "https://leetcode.cn/problems/zigzag-conversion/", "name": "6. Z 字形变换"}, {"frontId": "8", "link": "https://leetcode.cn/problems/string-to-integer-atoi/", "name": "8. 字符串转换整数 (atoi)"}, {"frontId": "10", "link": "https://leetcode.cn/problems/regular-expression-matching/", "name": "10. 正则表达式匹配"}, {"frontId": "12", "link": "https://leetcode.cn/problems/integer-to-roman/", "name": "12. 整数转罗马数字"}, {"frontId": "13", "link": "https://leetcode.cn/problems/roman-to-integer/", "name": "13. 罗马数字转整数"}, {"frontId": "14", "link": "https://leetcode.cn/problems/longest-common-prefix/", "name": "14. 最长公共前缀"}, {"frontId": "17", "link": "https://leetcode.cn/problems/letter-combinations-of-a-phone-number/", "name": "17. 电话号码的字母组合"}, {"frontId": "20", "link": "https://leetcode.cn/problems/valid-parentheses/", "name": "20. 有效的括号"}, {"frontId": "22", "link": "https://leetcode.cn/problems/generate-parentheses/", "name": "22. 括号生成"}, {"frontId": "28", "link": "https://leetcode.cn/problems/find-the-index-of-the-first-occurrence-in-a-string/", "name": "28. 实现 strStr()"}, {"frontId": "30", "link": "https://leetcode.cn/problems/substring-with-concatenation-of-all-words/", "name": "30. 串联所有单词的子串"}, {"frontId": "32", "link": "https://leetcode.cn/problems/longest-valid-parentheses/", "name": "32. 最长有效括号"}, {"frontId": "38", "link": "https://leetcode.cn/problems/count-and-say/", "name": "38. 外观数列"}, {"frontId": "43", "link": "https://leetcode.cn/problems/multiply-strings/", "name": "43. 字符串相乘"}, {"frontId": "44", "link": "https://leetcode.cn/problems/wildcard-matching/", "name": "44. 通配符匹配"}, {"frontId": "49", "link": "https://leetcode.cn/problems/group-anagrams/", "name": "49. 字母异位词分组"}, {"frontId": "58", "link": "https://leetcode.cn/problems/length-of-last-word/", "name": "58. 最后一个单词的长度"}, {"frontId": "65", "link": "https://leetcode.cn/problems/valid-number/", "name": "65. 有效数字"}, {"frontId": "166", "link": "https://leetcode.cn/problems/fraction-to-recurring-decimal/", "name": "166. 分数到小数"}, {"frontId": "214", "link": "https://leetcode.cn/problems/shortest-palindrome/", "name": "214. 最短回文串"}, {"frontId": "224", "link": "https://leetcode.cn/problems/basic-calculator/", "name": "224. 基本计算器"}, {"frontId": "282", "link": "https://leetcode.cn/problems/expression-add-operators/", "name": "282. 给表达式添加运算符"}, {"frontId": "301", "link": "https://leetcode.cn/problems/remove-invalid-parentheses/", "name": "301. 删除无效的括号"}, {"frontId": "331", "link": "https://leetcode.cn/problems/verify-preorder-serialization-of-a-binary-tree/", "name": "331. 验证二叉树的前序序列化"}, {"frontId": "336", "link": "https://leetcode.cn/problems/palindrome-pairs/", "name": "336. 回文对"}, {"frontId": "420", "link": "https://leetcode.cn/problems/strong-password-checker/", "name": "420. 强密码检验器"}, {"frontId": "423", "link": "https://leetcode.cn/problems/reconstruct-original-digits-from-english/", "name": "423. 从英文中重建数字"}, {"frontId": "433", "link": "https://leetcode.cn/problems/minimum-genetic-mutation/", "name": "433. 最小基因变化"}], "links": []}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

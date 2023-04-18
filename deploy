@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -ex
+
+npm run build
+
+cd public
+
+git init
+git add -A
+git commit -m 'deploy'
+git branch -M main
+
+# 发布到 https://muyids.github.io
+git push -f git@github.com:muyids/muyids.github.io.git main
+
+cd -

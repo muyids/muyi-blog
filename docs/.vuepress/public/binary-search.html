@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>二分查找</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "4", "link": "https://leetcode.cn/problems/median-of-two-sorted-arrays/", "name": "4. 寻找两个正序数组的中位数"}, {"frontId": "33", "link": "https://leetcode.cn/problems/search-in-rotated-sorted-array/", "name": "33. 搜索旋转排序数组"}, {"frontId": "34", "link": "https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/", "name": "34. 在排序数组中查找元素的第一个和最后一个位置"}, {"frontId": "35", "link": "https://leetcode.cn/problems/search-insert-position/", "name": "35. 搜索插入位置"}, {"frontId": "69", "link": "https://leetcode.cn/problems/sqrtx/", "name": "69. x 的平方根 "}, {"frontId": "74", "link": "https://leetcode.cn/problems/search-a-2d-matrix/", "name": "74. 搜索二维矩阵"}, {"frontId": "81", "link": "https://leetcode.cn/problems/search-in-rotated-sorted-array-ii/", "name": "81. 搜索旋转排序数组 II"}, {"frontId": "153", "link": "https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array/", "name": "153. 寻找旋转排序数组中的最小值"}, {"frontId": "154", "link": "https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array-ii/", "name": "154. 寻找旋转排序数组中的最小值 II"}, {"frontId": "162", "link": "https://leetcode.cn/problems/find-peak-element/", "name": "162. 寻找峰值"}, {"frontId": "167", "link": "https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/", "name": "167. 两数之和 II - 输入有序数组"}, {"frontId": "209", "link": "https://leetcode.cn/problems/minimum-size-subarray-sum/", "name": "209. 长度最小的子数组"}, {"frontId": "222", "link": "https://leetcode.cn/problems/count-complete-tree-nodes/", "name": "222. 完全二叉树的节点个数"}, {"frontId": "240", "link": "https://leetcode.cn/problems/search-a-2d-matrix-ii/", "name": "240. 搜索二维矩阵 II"}, {"frontId": "268", "link": "https://leetcode.cn/problems/missing-number/", "name": "268. 丢失的数字"}, {"frontId": "275", "link": "https://leetcode.cn/problems/h-index-ii/", "name": "275. H 指数 II"}, {"frontId": "278", "link": "https://leetcode.cn/problems/first-bad-version/", "name": "278. 第一个错误的版本"}, {"frontId": "287", "link": "https://leetcode.cn/problems/find-the-duplicate-number/", "name": "287. 寻找重复数"}, {"frontId": "300", "link": "https://leetcode.cn/problems/longest-increasing-subsequence/", "name": "300. 最长递增子序列"}, {"frontId": "315", "link": "https://leetcode.cn/problems/count-of-smaller-numbers-after-self/", "name": "315. 计算右侧小于当前元素的个数"}, {"frontId": "327", "link": "https://leetcode.cn/problems/count-of-range-sum/", "name": "327. 区间和的个数"}, {"frontId": "483", "link": "https://leetcode.cn/problems/smallest-good-base/", "name": "483. 最小好进制"}, {"frontId": "532", "link": "https://leetcode.cn/problems/k-diff-pairs-in-an-array/", "name": "532. 数组中的 k-diff 数对"}, {"frontId": "668", "link": "https://leetcode.cn/problems/kth-smallest-number-in-multiplication-table/", "name": "668. 乘法表中第k小的数"}, {"frontId": "719", "link": "https://leetcode.cn/problems/find-k-th-smallest-pair-distance/", "name": "719. 找出第 K 小的数对距离"}, {"frontId": "731", "link": "https://leetcode.cn/problems/my-calendar-ii/", "name": "731. 我的日程安排表 II"}, {"frontId": "732", "link": "https://leetcode.cn/problems/my-calendar-iii/", "name": "732. 我的日程安排表 III"}, {"frontId": "744", "link": "https://leetcode.cn/problems/find-smallest-letter-greater-than-target/", "name": "744. 寻找比目标字母大的最小字母"}, {"frontId": "786", "link": "https://leetcode.cn/problems/k-th-smallest-prime-fraction/", "name": "786. 第 K 个最小的素数分数"}, {"frontId": "793", "link": "https://leetcode.cn/problems/preimage-size-of-factorial-zeroes-function/", "name": "793. 阶乘函数后 K 个零"}, {"frontId": "354", "link": "https://leetcode.cn/problems/russian-doll-envelopes/", "name": "354. 俄罗斯套娃信封问题"}, {"frontId": "611", "link": "https://leetcode.cn/problems/valid-triangle-number/", "name": "611. 有效三角形的个数"}], "links": [{"source": "35. 搜索插入位置", "target": "33. 搜索旋转排序数组"}, {"source": "35. 搜索插入位置", "target": "34. 在排序数组中查找元素的第一个和最后一个位置"}, {"source": "35. 搜索插入位置", "target": "300. 最长递增子序列"}, {"source": "34. 在排序数组中查找元素的第一个和最后一个位置", "target": "69. x 的平方根 "}, {"source": "278. 第一个错误的版本", "target": "69. x 的平方根 "}, {"source": "33. 搜索旋转排序数组", "target": "81. 搜索旋转排序数组 II"}, {"source": "81. 搜索旋转排序数组 II", "target": "153. 寻找旋转排序数组中的最小值"}, {"source": "300. 最长递增子序列", "target": "354. 俄罗斯套娃信封问题"}, {"source": "35. 搜索插入位置", "target": "611. 有效三角形的个数"}, {"source": "611. 有效三角形的个数", "target": "668. 乘法表中第k小的数"}, {"source": "611. 有效三角形的个数", "target": "327. 区间和的个数"}]}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,10 @@
+node_modules
+package-lock.json
+yarn.lock
+public
+.idea
+.DS_Store
+logs
+Main.*
+!docs/.vuepress/public
+__pycache__/

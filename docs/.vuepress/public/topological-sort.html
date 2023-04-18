@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>拓扑排序</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "207", "link": "https://leetcode.cn/problems/course-schedule/", "name": "207. 课程表"}, {"frontId": "210", "link": "https://leetcode.cn/problems/course-schedule-ii/", "name": "210. 课程表 II"}, {"frontId": "310", "link": "https://leetcode.cn/problems/minimum-height-trees/", "name": "310. 最小高度树"}, {"frontId": "329", "link": "https://leetcode.cn/problems/longest-increasing-path-in-a-matrix/", "name": "329. 矩阵中的最长递增路径"}, {"frontId": "802", "link": "https://leetcode.cn/problems/find-eventual-safe-states/", "name": "802. 找到最终的安全状态"}, {"frontId": "851", "link": "https://leetcode.cn/problems/loud-and-rich/", "name": "851. 喧闹和富有"}, {"frontId": "2115", "link": "https://leetcode.cn/problems/find-all-possible-recipes-from-given-supplies/", "name": "2115. 从给定原材料中找到所有可以做出的菜"}, {"frontId": "2360", "link": "https://leetcode.cn/problems/longest-cycle-in-a-graph/", "name": "2360. 图中的最长环"}, {"frontId": "剑指 Offer II 115", "link": "https://leetcode.cn/problems/ur2n8P/", "name": "剑指 Offer II 115. 重建序列"}, {"frontId": "913", "link": "https://leetcode.cn/problems/cat-and-mouse/", "name": "913. 猫和老鼠"}, {"frontId": "1632", "link": "https://leetcode.cn/problems/rank-transform-of-a-matrix/", "name": "1632. 矩阵转换后的秩"}, {"frontId": "1203", "link": "https://leetcode.cn/problems/sort-items-by-groups-respecting-dependencies/", "name": "1203. 项目管理"}, {"frontId": "1916", "link": "https://leetcode.cn/problems/count-ways-to-build-rooms-in-an-ant-colony/", "name": "1916. 统计为蚁群构筑房间的不同顺序"}, {"frontId": "2192", "link": "https://leetcode.cn/problems/all-ancestors-of-a-node-in-a-directed-acyclic-graph/", "name": "2192. 有向无环图中一个节点的所有祖先"}, {"frontId": "剑指 Offer II 113", "link": "https://leetcode.cn/problems/QA2IGt/", "name": "剑指 Offer II 113. 课程顺序"}, {"frontId": "1462", "link": "https://leetcode.cn/problems/course-schedule-iv/", "name": "1462. 课程表 IV"}, {"frontId": "2050", "link": "https://leetcode.cn/problems/parallel-courses-iii/", "name": "2050. 并行课程 III"}, {"frontId": "剑指 Offer II 112", "link": "https://leetcode.cn/problems/fpTFWP/", "name": "剑指 Offer II 112. 最长递增路径"}, {"frontId": "2328", "link": "https://leetcode.cn/problems/number-of-increasing-paths-in-a-grid/", "name": "2328. 网格图中递增路径的数目"}, {"frontId": "2246", "link": "https://leetcode.cn/problems/longest-path-with-different-adjacent-characters/", "name": "2246. 相邻字符不同的最长路径"}, {"frontId": "1719", "link": "https://leetcode.cn/problems/number-of-ways-to-reconstruct-a-tree/", "name": "1719. 重构一棵树的方案数"}, {"frontId": "1857", "link": "https://leetcode.cn/problems/largest-color-value-in-a-directed-graph/", "name": "1857. 有向图中最大颜色值"}, {"frontId": "1786", "link": "https://leetcode.cn/problems/number-of-restricted-paths-from-first-to-last-node/", "name": "1786. 从第一个节点出发到最后一个节点的受限路径数"}, {"frontId": "1976", "link": "https://leetcode.cn/problems/number-of-ways-to-arrive-at-destination/", "name": "1976. 到达目的地的方案数"}, {"frontId": "1728", "link": "https://leetcode.cn/problems/cat-and-mouse-ii/", "name": "1728. 猫和老鼠 II"}, {"frontId": "剑指 Offer II 114", "link": "https://leetcode.cn/problems/Jf1JuT/", "name": "剑指 Offer II 114. 外星文字典"}, {"frontId": "1591", "link": "https://leetcode.cn/problems/strange-printer-ii/", "name": "1591. 奇怪的打印机 II"}], "links": [{"source": "207. 课程表", "target": "剑指 Offer II 115. 重建序列"}, {"source": "207. 课程表", "target": "210. 课程表 II"}, {"source": "210. 课程表 II", "target": "剑指 Offer II 113. 课程顺序"}, {"source": "210. 课程表 II", "target": "1462. 课程表 IV"}, {"source": "1462. 课程表 IV", "target": "2050. 并行课程 III"}, {"source": "207. 课程表", "target": "329. 矩阵中的最长递增路径"}, {"source": "329. 矩阵中的最长递增路径", "target": "剑指 Offer II 112. 最长递增路径"}, {"source": "329. 矩阵中的最长递增路径", "target": "2328. 网格图中递增路径的数目"}, {"source": "329. 矩阵中的最长递增路径", "target": "2246. 相邻字符不同的最长路径"}, {"source": "207. 课程表", "target": "310. 最小高度树"}, {"source": "310. 最小高度树", "target": "1719. 重构一棵树的方案数"}, {"source": "310. 最小高度树", "target": "1857. 有向图中最大颜色值"}, {"source": "310. 最小高度树", "target": "1786. 从第一个节点出发到最后一个节点的受限路径数"}, {"source": "310. 最小高度树", "target": "2192. 有向无环图中一个节点的所有祖先"}, {"source": "310. 最小高度树", "target": "2360. 图中的最长环"}, {"source": "207. 课程表", "target": "802. 找到最终的安全状态"}, {"source": "802. 找到最终的安全状态", "target": "1976. 到达目的地的方案数"}, {"source": "802. 找到最终的安全状态", "target": "2115. 从给定原材料中找到所有可以做出的菜"}, {"source": "207. 课程表", "target": "913. 猫和老鼠"}, {"source": "913. 猫和老鼠", "target": "1728. 猫和老鼠 II"}, {"source": "207. 课程表", "target": "剑指 Offer II 114. 外星文字典"}, {"source": "剑指 Offer II 114. 外星文字典", "target": "1591. 奇怪的打印机 II"}]}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>回溯</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "17", "link": "https://leetcode.cn/problems/letter-combinations-of-a-phone-number/", "name": "17. 电话号码的字母组合"}, {"frontId": "22", "link": "https://leetcode.cn/problems/generate-parentheses/", "name": "22. 括号生成"}, {"frontId": "37", "link": "https://leetcode.cn/problems/sudoku-solver/", "name": "37. 解数独"}, {"frontId": "39", "link": "https://leetcode.cn/problems/combination-sum/", "name": "39. 组合总和"}, {"frontId": "40", "link": "https://leetcode.cn/problems/combination-sum-ii/", "name": "40. 组合总和 II"}, {"frontId": "46", "link": "https://leetcode.cn/problems/permutations/", "name": "46. 全排列"}, {"frontId": "47", "link": "https://leetcode.cn/problems/permutations-ii/", "name": "47. 全排列 II"}, {"frontId": "51", "link": "https://leetcode.cn/problems/n-queens/", "name": "51. N 皇后"}, {"frontId": "52", "link": "https://leetcode.cn/problems/n-queens-ii/", "name": "52. N皇后 II"}, {"frontId": "77", "link": "https://leetcode.cn/problems/combinations/", "name": "77. 组合"}, {"frontId": "78", "link": "https://leetcode.cn/problems/subsets/", "name": "78. 子集"}, {"frontId": "79", "link": "https://leetcode.cn/problems/word-search/", "name": "79. 单词搜索"}, {"frontId": "89", "link": "https://leetcode.cn/problems/gray-code/", "name": "89. 格雷编码"}, {"frontId": "90", "link": "https://leetcode.cn/problems/subsets-ii/", "name": "90. 子集 II"}, {"frontId": "93", "link": "https://leetcode.cn/problems/restore-ip-addresses/", "name": "93. 复原 IP 地址"}, {"frontId": "95", "link": "https://leetcode.cn/problems/unique-binary-search-trees-ii/", "name": "95. 不同的二叉搜索树 II"}, {"frontId": "113", "link": "https://leetcode.cn/problems/path-sum-ii/", "name": "113. 路径总和 II"}, {"frontId": "126", "link": "https://leetcode.cn/problems/word-ladder-ii/", "name": "126. 单词接龙 II"}, {"frontId": "131", "link": "https://leetcode.cn/problems/palindrome-partitioning/", "name": "131. 分割回文串"}, {"frontId": "140", "link": "https://leetcode.cn/problems/word-break-ii/", "name": "140. 单词拆分 II"}, {"frontId": "282", "link": "https://leetcode.cn/problems/expression-add-operators/", "name": "282. 给表达式添加运算符"}, {"frontId": "301", "link": "https://leetcode.cn/problems/remove-invalid-parentheses/", "name": "301. 删除无效的括号"}, {"frontId": "638", "link": "https://leetcode.cn/problems/shopping-offers/", "name": "638. 大礼包"}, {"frontId": "679", "link": "https://leetcode.cn/problems/24-game/", "name": "679. 24 点游戏"}, {"frontId": "691", "link": "https://leetcode.cn/problems/stickers-to-spell-word/", "name": "691. 贴纸拼词"}, {"frontId": "797", "link": "https://leetcode.cn/problems/all-paths-from-source-to-target/", "name": "797. 所有可能的路径"}, {"frontId": "816", "link": "https://leetcode.cn/problems/ambiguous-coordinates/", "name": "816. 模糊坐标"}, {"frontId": "842", "link": "https://leetcode.cn/problems/split-array-into-fibonacci-sequence/", "name": "842. 将数组拆分成斐波那契序列"}, {"frontId": "1096", "link": "https://leetcode.cn/problems/brace-expansion-ii/", "name": "1096. 花括号展开 II"}, {"frontId": "1286", "link": "https://leetcode.cn/problems/iterator-for-combination/", "name": "1286. 字母组合迭代器"}, {"frontId": "526", "link": "https://leetcode.cn/problems/beautiful-arrangement/", "name": "526. 优美的排列"}], "links": [{"source": "17. 电话号码的字母组合", "target": "77. 组合"}, {"source": "77. 组合", "target": "78. 子集"}, {"source": "77. 组合", "target": "39. 组合总和"}, {"source": "39. 组合总和", "target": "40. 组合总和 II"}, {"source": "78. 子集", "target": "90. 子集 II"}, {"source": "17. 电话号码的字母组合", "target": "51. N 皇后"}, {"source": "51. N 皇后", "target": "52. N皇后 II"}, {"source": "17. 电话号码的字母组合", "target": "526. 优美的排列"}]}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

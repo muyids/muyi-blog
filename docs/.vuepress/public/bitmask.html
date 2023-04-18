@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>状态压缩</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "464", "link": "https://leetcode.cn/problems/can-i-win/", "name": "464. 我能赢吗"}, {"frontId": "473", "link": "https://leetcode.cn/problems/matchsticks-to-square/", "name": "473. 火柴拼正方形"}, {"frontId": "526", "link": "https://leetcode.cn/problems/beautiful-arrangement/", "name": "526. 优美的排列"}, {"frontId": "698", "link": "https://leetcode.cn/problems/partition-to-k-equal-sum-subsets/", "name": "698. 划分为k个相等的子集"}, {"frontId": "996", "link": "https://leetcode.cn/problems/number-of-squareful-arrays/", "name": "996. 正方形数组的数目"}, {"frontId": "1125", "link": "https://leetcode.cn/problems/smallest-sufficient-team/", "name": "1125. 最小的必要团队"}, {"frontId": "1349", "link": "https://leetcode.cn/problems/maximum-students-taking-exam/", "name": "1349. 参加考试的最大学生数"}, {"frontId": "638", "link": "https://leetcode.cn/problems/shopping-offers/", "name": "638. 大礼包"}, {"frontId": "691", "link": "https://leetcode.cn/problems/stickers-to-spell-word/", "name": "691. 贴纸拼词"}, {"frontId": "805", "link": "https://leetcode.cn/problems/split-array-with-same-average/", "name": "805. 数组的均值分割"}, {"frontId": "847", "link": "https://leetcode.cn/problems/shortest-path-visiting-all-nodes/", "name": "847. 访问所有节点的最短路径"}, {"frontId": "943", "link": "https://leetcode.cn/problems/find-the-shortest-superstring/", "name": "943. 最短超级串"}, {"frontId": "1494", "link": "https://leetcode.cn/problems/parallel-courses-ii/", "name": "1494. 并行课程 II"}, {"frontId": "1595", "link": "https://leetcode.cn/problems/minimum-cost-to-connect-two-groups-of-points/", "name": "1595. 连通两组点的最小成本"}, {"frontId": "1659", "link": "https://leetcode.cn/problems/maximize-grid-happiness/", "name": "1659. 最大化网格幸福感"}, {"frontId": "1986", "link": "https://leetcode.cn/problems/minimum-number-of-work-sessions-to-finish-the-tasks/", "name": "1986. 完成任务的最少工作时间段"}, {"frontId": "1755", "link": "https://leetcode.cn/problems/closest-subsequence-sum/", "name": "1755. 最接近目标值的子序列和"}, {"frontId": "1799", "link": "https://leetcode.cn/problems/maximize-score-after-n-operations/", "name": "1799. N 次操作后的最大分数和"}, {"frontId": "1815", "link": "https://leetcode.cn/problems/maximum-number-of-groups-getting-fresh-donuts/", "name": "1815. 得到新鲜甜甜圈的最多组数"}, {"frontId": "2305", "link": "https://leetcode.cn/problems/fair-distribution-of-cookies/", "name": "2305. 公平分发饼干"}, {"frontId": "1879", "link": "https://leetcode.cn/problems/minimum-xor-sum-of-two-arrays/", "name": "1879. 两个数组最小的异或值之和"}, {"frontId": "2002", "link": "https://leetcode.cn/problems/maximum-product-of-the-length-of-two-palindromic-subsequences/", "name": "2002. 两个回文子序列长度的最大乘积"}, {"frontId": "2035", "link": "https://leetcode.cn/problems/partition-array-into-two-arrays-to-minimize-sum-difference/", "name": "2035. 将数组分成两个数组并最小化数组和的差"}, {"frontId": "2172", "link": "https://leetcode.cn/problems/maximum-and-sum-of-array/", "name": "2172. 数组的最大与和"}, {"frontId": "1994", "link": "https://leetcode.cn/problems/the-number-of-good-subsets/", "name": "1994. 好子集的数目"}, {"frontId": "1255", "link": "https://leetcode.cn/problems/maximum-score-words-formed-by-letters/", "name": "1255. 得分最高的单词集合"}], "links": [{"source": "1125. 最小的必要团队", "target": "1349. 参加考试的最大学生数"}, {"source": "1349. 参加考试的最大学生数", "target": "1494. 并行课程 II"}, {"source": "1349. 参加考试的最大学生数", "target": "1595. 连通两组点的最小成本"}, {"source": "1595. 连通两组点的最小成本", "target": "1659. 最大化网格幸福感"}, {"source": "1595. 连通两组点的最小成本", "target": "1986. 完成任务的最少工作时间段"}, {"source": "1755. 最接近目标值的子序列和", "target": "1799. N 次操作后的最大分数和"}, {"source": "1815. 得到新鲜甜甜圈的最多组数", "target": "2305. 公平分发饼干"}, {"source": "1879. 两个数组最小的异或值之和", "target": "2002. 两个回文子序列长度的最大乘积"}, {"source": "1879. 两个数组最小的异或值之和", "target": "2035. 将数组分成两个数组并最小化数组和的差"}, {"source": "1879. 两个数组最小的异或值之和", "target": "2172. 数组的最大与和"}, {"source": "473. 火柴拼正方形", "target": "638. 大礼包"}, {"source": "526. 优美的排列", "target": "698. 划分为k个相等的子集"}, {"source": "638. 大礼包", "target": "1815. 得到新鲜甜甜圈的最多组数"}, {"source": "698. 划分为k个相等的子集", "target": "805. 数组的均值分割"}, {"source": "805. 数组的均值分割", "target": "1755. 最接近目标值的子序列和"}, {"source": "805. 数组的均值分割", "target": "1879. 两个数组最小的异或值之和"}, {"source": "805. 数组的均值分割", "target": "1994. 好子集的数目"}, {"source": "805. 数组的均值分割", "target": "943. 最短超级串"}, {"source": "847. 访问所有节点的最短路径", "target": "1125. 最小的必要团队"}, {"source": "847. 访问所有节点的最短路径", "target": "1255. 得分最高的单词集合"}]}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

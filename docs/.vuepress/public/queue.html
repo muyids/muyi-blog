@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>队列</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "225", "link": "https://leetcode.cn/problems/implement-stack-using-queues/", "name": "225. 用队列实现栈"}, {"frontId": "232", "link": "https://leetcode.cn/problems/implement-queue-using-stacks/", "name": "232. 用栈实现队列"}, {"frontId": "239", "link": "https://leetcode.cn/problems/sliding-window-maximum/", "name": "239. 滑动窗口最大值"}, {"frontId": "341", "link": "https://leetcode.cn/problems/flatten-nested-list-iterator/", "name": "341. 扁平化嵌套列表迭代器"}, {"frontId": "387", "link": "https://leetcode.cn/problems/first-unique-character-in-a-string/", "name": "387. 字符串中的第一个唯一字符"}, {"frontId": "641", "link": "https://leetcode.cn/problems/design-circular-deque/", "name": "641. 设计循环双端队列"}, {"frontId": "622", "link": "https://leetcode.cn/problems/design-circular-queue/", "name": "622. 设计循环队列"}, {"frontId": "918", "link": "https://leetcode.cn/problems/maximum-sum-circular-subarray/", "name": "918. 环形子数组的最大和"}, {"frontId": "933", "link": "https://leetcode.cn/problems/number-of-recent-calls/", "name": "933. 最近的请求次数"}, {"frontId": "1352", "link": "https://leetcode.cn/problems/product-of-the-last-k-numbers/", "name": "1352. 最后 K 个数的乘积"}, {"frontId": "2073", "link": "https://leetcode.cn/problems/time-needed-to-buy-tickets/", "name": "2073. 买票需要的时间"}, {"frontId": "2327", "link": "https://leetcode.cn/problems/number-of-people-aware-of-a-secret/", "name": "2327. 知道秘密的人数"}, {"frontId": "剑指 Offer 09", "link": "https://leetcode.cn/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/", "name": "剑指 Offer 09. 用两个栈实现队列"}, {"frontId": "剑指 Offer 50", "link": "https://leetcode.cn/problems/di-yi-ge-zhi-chu-xian-yi-ci-de-zi-fu-lcof/", "name": "剑指 Offer 50. 第一个只出现一次的字符"}, {"frontId": "剑指 Offer 59 - I", "link": "https://leetcode.cn/problems/hua-dong-chuang-kou-de-zui-da-zhi-lcof/", "name": "剑指 Offer 59 - I. 滑动窗口的最大值"}, {"frontId": "面试题59 - II", "link": "https://leetcode.cn/problems/dui-lie-de-zui-da-zhi-lcof/", "name": "面试题59 - II. 队列的最大值"}, {"frontId": "剑指 Offer II 041", "link": "https://leetcode.cn/problems/qIsx9U/", "name": "剑指 Offer II 041. 滑动窗口的平均值"}, {"frontId": "剑指 Offer II 042", "link": "https://leetcode.cn/problems/H8086Q/", "name": "剑指 Offer II 042. 最近请求次数"}, {"frontId": "649", "link": "https://leetcode.cn/problems/dota2-senate/", "name": "649. Dota2 参议院"}, {"frontId": "862", "link": "https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/", "name": "862. 和至少为 K 的最短子数组"}, {"frontId": "936", "link": "https://leetcode.cn/problems/stamping-the-sequence/", "name": "936. 戳印序列"}, {"frontId": "950", "link": "https://leetcode.cn/problems/reveal-cards-in-increasing-order/", "name": "950. 按递增顺序显示卡牌"}, {"frontId": "995", "link": "https://leetcode.cn/problems/minimum-number-of-k-consecutive-bit-flips/", "name": "995. K 连续位的最小翻转次数"}], "links": []}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

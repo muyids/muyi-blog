@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>并查集</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "128", "link": "https://leetcode.cn/problems/longest-consecutive-sequence/", "name": "128. 最长连续序列"}, {"frontId": "130", "link": "https://leetcode.cn/problems/surrounded-regions/", "name": "130. 被围绕的区域"}, {"frontId": "200", "link": "https://leetcode.cn/problems/number-of-islands/", "name": "200. 岛屿数量"}, {"frontId": "399", "link": "https://leetcode.cn/problems/evaluate-division/", "name": "399. 除法求值"}, {"frontId": "547", "link": "https://leetcode.cn/problems/number-of-provinces/", "name": "547. 省份数量"}, {"frontId": "684", "link": "https://leetcode.cn/problems/redundant-connection/", "name": "684. 冗余连接"}, {"frontId": "685", "link": "https://leetcode.cn/problems/redundant-connection-ii/", "name": "685. 冗余连接 II"}, {"frontId": "695", "link": "https://leetcode.cn/problems/max-area-of-island/", "name": "695. 岛屿的最大面积"}, {"frontId": "721", "link": "https://leetcode.cn/problems/accounts-merge/", "name": "721. 账户合并"}, {"frontId": "765", "link": "https://leetcode.cn/problems/couples-holding-hands/", "name": "765. 情侣牵手"}, {"frontId": "778", "link": "https://leetcode.cn/problems/swim-in-rising-water/", "name": "778. 水位上升的泳池中游泳"}, {"frontId": "785", "link": "https://leetcode.cn/problems/is-graph-bipartite/", "name": "785. 判断二分图"}, {"frontId": "803", "link": "https://leetcode.cn/problems/bricks-falling-when-hit/", "name": "803. 打砖块"}, {"frontId": "827", "link": "https://leetcode.cn/problems/making-a-large-island/", "name": "827. 最大人工岛"}, {"frontId": "886", "link": "https://leetcode.cn/problems/possible-bipartition/", "name": "886. 可能的二分法"}, {"frontId": "947", "link": "https://leetcode.cn/problems/most-stones-removed-with-same-row-or-column/", "name": "947. 移除最多的同行或同列石头"}, {"frontId": "959", "link": "https://leetcode.cn/problems/regions-cut-by-slashes/", "name": "959. 由斜杠划分区域"}, {"frontId": "990", "link": "https://leetcode.cn/problems/satisfiability-of-equality-equations/", "name": "990. 等式方程的可满足性"}, {"frontId": "1361", "link": "https://leetcode.cn/problems/validate-binary-tree-nodes/", "name": "1361. 验证二叉树"}, {"frontId": "1254", "link": "https://leetcode.cn/problems/number-of-closed-islands/", "name": "1254. 统计封闭岛屿的数目"}, {"frontId": "839", "link": "https://leetcode.cn/problems/similar-string-groups/", "name": "839. 相似字符串组"}, {"frontId": "924", "link": "https://leetcode.cn/problems/minimize-malware-spread/", "name": "924. 尽量减少恶意软件的传播"}, {"frontId": "928", "link": "https://leetcode.cn/problems/minimize-malware-spread-ii/", "name": "928. 尽量减少恶意软件的传播 II"}, {"frontId": "952", "link": "https://leetcode.cn/problems/largest-component-size-by-common-factor/", "name": "952. 按公因数计算最大组件大小"}, {"frontId": "1020", "link": "https://leetcode.cn/problems/number-of-enclaves/", "name": "1020. 飞地的数量"}, {"frontId": "1627", "link": "https://leetcode.cn/problems/graph-connectivity-with-threshold/", "name": "1627. 带阈值的图连通性"}, {"frontId": "1632", "link": "https://leetcode.cn/problems/rank-transform-of-a-matrix/", "name": "1632. 矩阵转换后的秩"}, {"frontId": "1202", "link": "https://leetcode.cn/problems/smallest-string-with-swaps/", "name": "1202. 交换字符串中的元素"}, {"frontId": "1569", "link": "https://leetcode.cn/problems/number-of-ways-to-reorder-array-to-get-same-bst/", "name": "1569. 将子数组重新排序得到同一个二叉查找树的方案数"}, {"frontId": "1631", "link": "https://leetcode.cn/problems/path-with-minimum-effort/", "name": "1631. 最小体力消耗路径"}, {"frontId": "2157", "link": "https://leetcode.cn/problems/groups-of-strings/", "name": "2157. 字符串分组"}, {"frontId": "1319", "link": "https://leetcode.cn/problems/number-of-operations-to-make-network-connected/", "name": "1319. 连通网络的操作次数"}, {"frontId": "2316", "link": "https://leetcode.cn/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph/", "name": "2316. 统计无向图中无法互相到达点对数"}, {"frontId": "1905", "link": "https://leetcode.cn/problems/count-sub-islands/", "name": "1905. 统计子岛屿"}, {"frontId": "1391", "link": "https://leetcode.cn/problems/check-if-there-is-a-valid-path-in-a-grid/", "name": "1391. 检查网格中是否存在有效路径"}, {"frontId": "1998", "link": "https://leetcode.cn/problems/gcd-sort-of-an-array/", "name": "1998. 数组的最大公因数排序"}, {"frontId": "2076", "link": "https://leetcode.cn/problems/process-restricted-friend-requests/", "name": "2076. 处理含限制条件的好友请求"}, {"frontId": "1722", "link": "https://leetcode.cn/problems/minimize-hamming-distance-after-swap-operations/", "name": "1722. 执行交换操作后的最小汉明距离"}, {"frontId": "1489", "link": "https://leetcode.cn/problems/find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree/", "name": "1489. 找到最小生成树里的关键边和伪关键边"}, {"frontId": "1267", "link": "https://leetcode.cn/problems/count-servers-that-communicate/", "name": "1267. 统计参与通信的服务器"}, {"frontId": "1559", "link": "https://leetcode.cn/problems/detect-cycles-in-2d-grid/", "name": "1559. 二维网格图中探测环"}, {"frontId": "1579", "link": "https://leetcode.cn/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/", "name": "1579. 保证图可完全遍历"}, {"frontId": "2003", "link": "https://leetcode.cn/problems/smallest-missing-genetic-value-in-each-subtree/", "name": "2003. 每棵子树内缺失的最小基因值"}, {"frontId": "1970", "link": "https://leetcode.cn/problems/last-day-where-you-can-still-cross/", "name": "1970. 你能穿过矩阵的最后一天"}, {"frontId": "1697", "link": "https://leetcode.cn/problems/checking-existence-of-edge-length-limited-paths/", "name": "1697. 检查边长度限制的路径是否存在"}, {"frontId": "1584", "link": "https://leetcode.cn/problems/min-cost-to-connect-all-points/", "name": "1584. 连接所有点的最小费用"}], "links": [{"source": "128. 最长连续序列", "target": "839. 相似字符串组"}, {"source": "128. 最长连续序列", "target": "1202. 交换字符串中的元素"}, {"source": "128. 最长连续序列", "target": "2157. 字符串分组"}, {"source": "130. 被围绕的区域", "target": "200. 岛屿数量"}, {"source": "130. 被围绕的区域", "target": "1319. 连通网络的操作次数"}, {"source": "130. 被围绕的区域", "target": "2316. 统计无向图中无法互相到达点对数"}, {"source": "200. 岛屿数量", "target": "695. 岛屿的最大面积"}, {"source": "200. 岛屿数量", "target": "1254. 统计封闭岛屿的数目"}, {"source": "200. 岛屿数量", "target": "1905. 统计子岛屿"}, {"source": "399. 除法求值", "target": "803. 打砖块"}, {"source": "399. 除法求值", "target": "952. 按公因数计算最大组件大小"}, {"source": "399. 除法求值", "target": "990. 等式方程的可满足性"}, {"source": "399. 除法求值", "target": "1391. 检查网格中是否存在有效路径"}, {"source": "399. 除法求值", "target": "1998. 数组的最大公因数排序"}, {"source": "547. 省份数量", "target": "128. 最长连续序列"}, {"source": "547. 省份数量", "target": "130. 被围绕的区域"}, {"source": "547. 省份数量", "target": "399. 除法求值"}, {"source": "547. 省份数量", "target": "684. 冗余连接"}, {"source": "547. 省份数量", "target": "765. 情侣牵手"}, {"source": "547. 省份数量", "target": "778. 水位上升的泳池中游泳"}, {"source": "547. 省份数量", "target": "1361. 验证二叉树"}, {"source": "684. 冗余连接", "target": "685. 冗余连接 II"}, {"source": "684. 冗余连接", "target": "721. 账户合并"}, {"source": "695. 岛屿的最大面积", "target": "827. 最大人工岛"}, {"source": "765. 情侣牵手", "target": "886. 可能的二分法"}, {"source": "765. 情侣牵手", "target": "2076. 处理含限制条件的好友请求"}, {"source": "778. 水位上升的泳池中游泳", "target": "947. 移除最多的同行或同列石头"}, {"source": "785. 判断二分图", "target": "765. 情侣牵手"}, {"source": "839. 相似字符串组", "target": "1722. 执行交换操作后的最小汉明距离"}, {"source": "886. 可能的二分法", "target": "1489. 找到最小生成树里的关键边和伪关键边"}, {"source": "924. 尽量减少恶意软件的传播", "target": "928. 尽量减少恶意软件的传播 II"}, {"source": "947. 移除最多的同行或同列石头", "target": "1020. 飞地的数量"}, {"source": "947. 移除最多的同行或同列石头", "target": "1631. 最小体力消耗路径"}, {"source": "947. 移除最多的同行或同列石头", "target": "1632. 矩阵转换后的秩"}, {"source": "1319. 连通网络的操作次数", "target": "924. 尽量减少恶意软件的传播"}, {"source": "1319. 连通网络的操作次数", "target": "1267. 统计参与通信的服务器"}, {"source": "1319. 连通网络的操作次数", "target": "1559. 二维网格图中探测环"}, {"source": "1319. 连通网络的操作次数", "target": "1579. 保证图可完全遍历"}, {"source": "1319. 连通网络的操作次数", "target": "1627. 带阈值的图连通性"}, {"source": "1361. 验证二叉树", "target": "2003. 每棵子树内缺失的最小基因值"}, {"source": "1632. 矩阵转换后的秩", "target": "1970. 你能穿过矩阵的最后一天"}, {"source": "1722. 执行交换操作后的最小汉明距离", "target": "1569. 将子数组重新排序得到同一个二叉查找树的方案数"}, {"source": "1722. 执行交换操作后的最小汉明距离", "target": "1697. 检查边长度限制的路径是否存在"}, {"source": "2316. 统计无向图中无法互相到达点对数", "target": "1584. 连接所有点的最小费用"}]}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

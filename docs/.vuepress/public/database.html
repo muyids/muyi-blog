@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>数据库</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "175", "link": "https://leetcode.cn/problems/combine-two-tables/", "name": "175. 组合两个表"}, {"frontId": "176", "link": "https://leetcode.cn/problems/second-highest-salary/", "name": "176. 第二高的薪水"}, {"frontId": "177", "link": "https://leetcode.cn/problems/nth-highest-salary/", "name": "177. 第N高的薪水"}, {"frontId": "178", "link": "https://leetcode.cn/problems/rank-scores/", "name": "178. 分数排名"}, {"frontId": "180", "link": "https://leetcode.cn/problems/consecutive-numbers/", "name": "180. 连续出现的数字"}, {"frontId": "181", "link": "https://leetcode.cn/problems/employees-earning-more-than-their-managers/", "name": "181. 超过经理收入的员工"}, {"frontId": "182", "link": "https://leetcode.cn/problems/duplicate-emails/", "name": "182. 查找重复的电子邮箱"}, {"frontId": "183", "link": "https://leetcode.cn/problems/customers-who-never-order/", "name": "183. 从不订购的客户"}, {"frontId": "184", "link": "https://leetcode.cn/problems/department-highest-salary/", "name": "184. 部门工资最高的员工"}, {"frontId": "185", "link": "https://leetcode.cn/problems/department-top-three-salaries/", "name": "185. 部门工资前三高的所有员工"}, {"frontId": "196", "link": "https://leetcode.cn/problems/delete-duplicate-emails/", "name": "196. 删除重复的电子邮箱"}, {"frontId": "197", "link": "https://leetcode.cn/problems/rising-temperature/", "name": "197. 上升的温度"}, {"frontId": "262", "link": "https://leetcode.cn/problems/trips-and-users/", "name": "262. 行程和用户"}, {"frontId": "595", "link": "https://leetcode.cn/problems/big-countries/", "name": "595. 大的国家"}, {"frontId": "620", "link": "https://leetcode.cn/problems/not-boring-movies/", "name": "620. 有趣的电影"}, {"frontId": "626", "link": "https://leetcode.cn/problems/exchange-seats/", "name": "626. 换座位"}, {"frontId": "627", "link": "https://leetcode.cn/problems/swap-salary/", "name": "627. 变更性别"}, {"frontId": "1179", "link": "https://leetcode.cn/problems/reformat-department-table/", "name": "1179. 重新格式化部门表"}, {"frontId": "584", "link": "https://leetcode.cn/problems/find-customer-referee/", "name": "584. 寻找用户推荐人"}, {"frontId": "586", "link": "https://leetcode.cn/problems/customer-placing-the-largest-number-of-orders/", "name": "586. 订单最多的客户"}, {"frontId": "596", "link": "https://leetcode.cn/problems/classes-more-than-5-students/", "name": "596. 超过5名学生的课"}, {"frontId": "601", "link": "https://leetcode.cn/problems/human-traffic-of-stadium/", "name": "601. 体育馆的人流量"}, {"frontId": "607", "link": "https://leetcode.cn/problems/sales-person/", "name": "607. 销售员"}], "links": []}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

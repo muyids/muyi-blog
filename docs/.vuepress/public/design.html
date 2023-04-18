@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>设计</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "146", "link": "https://leetcode.cn/problems/lru-cache/", "name": "146. LRU 缓存"}, {"frontId": "155", "link": "https://leetcode.cn/problems/min-stack/", "name": "155. 最小栈"}, {"frontId": "173", "link": "https://leetcode.cn/problems/binary-search-tree-iterator/", "name": "173. 二叉搜索树迭代器"}, {"frontId": "208", "link": "https://leetcode.cn/problems/implement-trie-prefix-tree/", "name": "208. 实现 Trie (前缀树)"}, {"frontId": "211", "link": "https://leetcode.cn/problems/design-add-and-search-words-data-structure/", "name": "211. 添加与搜索单词 - 数据结构设计"}, {"frontId": "225", "link": "https://leetcode.cn/problems/implement-stack-using-queues/", "name": "225. 用队列实现栈"}, {"frontId": "232", "link": "https://leetcode.cn/problems/implement-queue-using-stacks/", "name": "232. 用栈实现队列"}, {"frontId": "295", "link": "https://leetcode.cn/problems/find-median-from-data-stream/", "name": "295. 数据流的中位数"}, {"frontId": "297", "link": "https://leetcode.cn/problems/serialize-and-deserialize-binary-tree/", "name": "297. 二叉树的序列化与反序列化"}, {"frontId": "303", "link": "https://leetcode.cn/problems/range-sum-query-immutable/", "name": "303. 区域和检索 - 数组不可变"}, {"frontId": "304", "link": "https://leetcode.cn/problems/range-sum-query-2d-immutable/", "name": "304. 二维区域和检索 - 矩阵不可变"}, {"frontId": "307", "link": "https://leetcode.cn/problems/range-sum-query-mutable/", "name": "307. 区域和检索 - 数组可修改"}, {"frontId": "341", "link": "https://leetcode.cn/problems/flatten-nested-list-iterator/", "name": "341. 扁平化嵌套列表迭代器"}, {"frontId": "352", "link": "https://leetcode.cn/problems/data-stream-as-disjoint-intervals/", "name": "352. 将数据流变为多个不相交区间"}, {"frontId": "355", "link": "https://leetcode.cn/problems/design-twitter/", "name": "355. 设计推特"}, {"frontId": "380", "link": "https://leetcode.cn/problems/insert-delete-getrandom-o1/", "name": "380. O(1) 时间插入、删除和获取随机元素"}, {"frontId": "381", "link": "https://leetcode.cn/problems/insert-delete-getrandom-o1-duplicates-allowed/", "name": "381. O(1) 时间插入、删除和获取随机元素 - 允许重复"}, {"frontId": "460", "link": "https://leetcode.cn/problems/lfu-cache/", "name": "460. LFU 缓存"}, {"frontId": "677", "link": "https://leetcode.cn/problems/map-sum-pairs/", "name": "677. 键值映射"}, {"frontId": "729", "link": "https://leetcode.cn/problems/my-calendar-i/", "name": "729. 我的日程安排表 I"}, {"frontId": "284", "link": "https://leetcode.cn/problems/peeking-iterator/", "name": "284. 顶端迭代器"}, {"frontId": "432", "link": "https://leetcode.cn/problems/all-oone-data-structure/", "name": "432. 全 O(1) 的数据结构"}, {"frontId": "449", "link": "https://leetcode.cn/problems/serialize-and-deserialize-bst/", "name": "449. 序列化和反序列化二叉搜索树"}, {"frontId": "535", "link": "https://leetcode.cn/problems/encode-and-decode-tinyurl/", "name": "535. TinyURL 的加密与解密"}, {"frontId": "676", "link": "https://leetcode.cn/problems/implement-magic-dictionary/", "name": "676. 实现一个魔法字典"}, {"frontId": "715", "link": "https://leetcode.cn/problems/range-module/", "name": "715. Range 模块"}, {"frontId": "731", "link": "https://leetcode.cn/problems/my-calendar-ii/", "name": "731. 我的日程安排表 II"}, {"frontId": "732", "link": "https://leetcode.cn/problems/my-calendar-iii/", "name": "732. 我的日程安排表 III"}, {"frontId": "745", "link": "https://leetcode.cn/problems/prefix-and-suffix-search/", "name": "745. 前缀和后缀搜索"}, {"frontId": "706", "link": "https://leetcode.cn/problems/design-hashmap/", "name": "706. 设计哈希映射"}], "links": []}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

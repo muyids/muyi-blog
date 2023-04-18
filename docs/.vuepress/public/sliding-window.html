@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>滑动窗口</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "3", "link": "https://leetcode.cn/problems/longest-substring-without-repeating-characters/", "name": "3. 无重复字符的最长子串"}, {"frontId": "30", "link": "https://leetcode.cn/problems/substring-with-concatenation-of-all-words/", "name": "30. 串联所有单词的子串"}, {"frontId": "76", "link": "https://leetcode.cn/problems/minimum-window-substring/", "name": "76. 最小覆盖子串"}, {"frontId": "187", "link": "https://leetcode.cn/problems/repeated-dna-sequences/", "name": "187. 重复的DNA序列"}, {"frontId": "209", "link": "https://leetcode.cn/problems/minimum-size-subarray-sum/", "name": "209. 长度最小的子数组"}, {"frontId": "219", "link": "https://leetcode.cn/problems/contains-duplicate-ii/", "name": "219. 存在重复元素 II"}, {"frontId": "220", "link": "https://leetcode.cn/problems/contains-duplicate-iii/", "name": "220. 存在重复元素 III"}, {"frontId": "239", "link": "https://leetcode.cn/problems/sliding-window-maximum/", "name": "239. 滑动窗口最大值"}, {"frontId": "395", "link": "https://leetcode.cn/problems/longest-substring-with-at-least-k-repeating-characters/", "name": "395. 至少有 K 个重复字符的最长子串"}, {"frontId": "424", "link": "https://leetcode.cn/problems/longest-repeating-character-replacement/", "name": "424. 替换后的最长重复字符"}, {"frontId": "438", "link": "https://leetcode.cn/problems/find-all-anagrams-in-a-string/", "name": "438. 找到字符串中所有字母异位词"}, {"frontId": "567", "link": "https://leetcode.cn/problems/permutation-in-string/", "name": "567. 字符串的排列"}, {"frontId": "632", "link": "https://leetcode.cn/problems/smallest-range-covering-elements-from-k-lists/", "name": "632. 最小区间"}, {"frontId": "713", "link": "https://leetcode.cn/problems/subarray-product-less-than-k/", "name": "713. 乘积小于 K 的子数组"}, {"frontId": "718", "link": "https://leetcode.cn/problems/maximum-length-of-repeated-subarray/", "name": "718. 最长重复子数组"}, {"frontId": "904", "link": "https://leetcode.cn/problems/fruit-into-baskets/", "name": "904. 水果成篮"}, {"frontId": "978", "link": "https://leetcode.cn/problems/longest-turbulent-subarray/", "name": "978. 最长湍流子数组"}, {"frontId": "1004", "link": "https://leetcode.cn/problems/max-consecutive-ones-iii/", "name": "1004. 最大连续1的个数 III"}, {"frontId": "1156", "link": "https://leetcode.cn/problems/swap-for-longest-repeated-character-substring/", "name": "1156. 单字符重复子串的最大长度"}, {"frontId": "1208", "link": "https://leetcode.cn/problems/get-equal-substrings-within-budget/", "name": "1208. 尽可能使字符串相等"}, {"frontId": "480", "link": "https://leetcode.cn/problems/sliding-window-median/", "name": "480. 滑动窗口中位数"}, {"frontId": "643", "link": "https://leetcode.cn/problems/maximum-average-subarray-i/", "name": "643. 子数组最大平均数 I"}, {"frontId": "837", "link": "https://leetcode.cn/problems/new-21-game/", "name": "837. 新 21 点"}, {"frontId": "862", "link": "https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/", "name": "862. 和至少为 K 的最短子数组"}, {"frontId": "930", "link": "https://leetcode.cn/problems/binary-subarrays-with-sum/", "name": "930. 和相同的二元子数组"}, {"frontId": "992", "link": "https://leetcode.cn/problems/subarrays-with-k-different-integers/", "name": "992. K 个不同整数的子数组"}, {"frontId": "995", "link": "https://leetcode.cn/problems/minimum-number-of-k-consecutive-bit-flips/", "name": "995. K 连续位的最小翻转次数"}, {"frontId": "1031", "link": "https://leetcode.cn/problems/maximum-sum-of-two-non-overlapping-subarrays/", "name": "1031. 两个非重叠子数组的最大和"}, {"frontId": "1044", "link": "https://leetcode.cn/problems/longest-duplicate-substring/", "name": "1044. 最长重复子串"}, {"frontId": "1052", "link": "https://leetcode.cn/problems/grumpy-bookstore-owner/", "name": "1052. 爱生气的书店老板"}], "links": []}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

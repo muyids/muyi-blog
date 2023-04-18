@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -ex
+
+# 整理项目代码
+# sh bin/formatter.sh
+
+git add .
+
+pre-commit run --all-files # --verbose
+
+# https://github.com/commitizen-tools/commitizen
+cz commit

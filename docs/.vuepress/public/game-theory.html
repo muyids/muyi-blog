@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>博弈</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "292", "link": "https://leetcode.cn/problems/nim-game/", "name": "292. Nim 游戏"}, {"frontId": "464", "link": "https://leetcode.cn/problems/can-i-win/", "name": "464. 我能赢吗"}, {"frontId": "486", "link": "https://leetcode.cn/problems/predict-the-winner/", "name": "486. 预测赢家"}, {"frontId": "877", "link": "https://leetcode.cn/problems/stone-game/", "name": "877. 石子游戏"}, {"frontId": "1025", "link": "https://leetcode.cn/problems/divisor-game/", "name": "1025. 除数博弈"}, {"frontId": "1140", "link": "https://leetcode.cn/problems/stone-game-ii/", "name": "1140. 石子游戏 II"}, {"frontId": "375", "link": "https://leetcode.cn/problems/guess-number-higher-or-lower-ii/", "name": "375. 猜数字大小 II"}, {"frontId": "810", "link": "https://leetcode.cn/problems/chalkboard-xor-game/", "name": "810. 黑板异或游戏"}, {"frontId": "843", "link": "https://leetcode.cn/problems/guess-the-word/", "name": "843. 猜猜这个单词"}, {"frontId": "913", "link": "https://leetcode.cn/problems/cat-and-mouse/", "name": "913. 猫和老鼠"}, {"frontId": "1406", "link": "https://leetcode.cn/problems/stone-game-iii/", "name": "1406. 石子游戏 III"}, {"frontId": "2029", "link": "https://leetcode.cn/problems/stone-game-ix/", "name": "2029. 石子游戏 IX"}, {"frontId": "1510", "link": "https://leetcode.cn/problems/stone-game-iv/", "name": "1510. 石子游戏 IV"}, {"frontId": "1563", "link": "https://leetcode.cn/problems/stone-game-v/", "name": "1563. 石子游戏 V"}, {"frontId": "1686", "link": "https://leetcode.cn/problems/stone-game-vi/", "name": "1686. 石子游戏 VI"}, {"frontId": "1690", "link": "https://leetcode.cn/problems/stone-game-vii/", "name": "1690. 石子游戏 VII"}, {"frontId": "1872", "link": "https://leetcode.cn/problems/stone-game-viii/", "name": "1872. 石子游戏 VIII"}, {"frontId": "1927", "link": "https://leetcode.cn/problems/sum-game/", "name": "1927. 求和游戏"}, {"frontId": "2038", "link": "https://leetcode.cn/problems/remove-colored-pieces-if-both-neighbors-are-the-same-color/", "name": "2038. 如果相邻两个颜色均相同则删除当前颜色"}, {"frontId": "1561", "link": "https://leetcode.cn/problems/maximum-number-of-coins-you-can-get/", "name": "1561. 你可以获得的最大硬币数目"}, {"frontId": "1728", "link": "https://leetcode.cn/problems/cat-and-mouse-ii/", "name": "1728. 猫和老鼠 II"}], "links": [{"source": "292. Nim 游戏", "target": "464. 我能赢吗"}, {"source": "292. Nim 游戏", "target": "375. 猜数字大小 II"}, {"source": "375. 猜数字大小 II", "target": "486. 预测赢家"}, {"source": "486. 预测赢家", "target": "1025. 除数博弈"}, {"source": "486. 预测赢家", "target": "913. 猫和老鼠"}, {"source": "292. Nim 游戏", "target": "877. 石子游戏"}, {"source": "877. 石子游戏", "target": "1140. 石子游戏 II"}, {"source": "877. 石子游戏", "target": "2029. 石子游戏 IX"}, {"source": "1140. 石子游戏 II", "target": "1406. 石子游戏 III"}, {"source": "1406. 石子游戏 III", "target": "1510. 石子游戏 IV"}, {"source": "1406. 石子游戏 III", "target": "1563. 石子游戏 V"}, {"source": "1563. 石子游戏 V", "target": "1686. 石子游戏 VI"}, {"source": "1563. 石子游戏 V", "target": "1690. 石子游戏 VII"}, {"source": "1690. 石子游戏 VII", "target": "1872. 石子游戏 VIII"}, {"source": "464. 我能赢吗", "target": "810. 黑板异或游戏"}, {"source": "464. 我能赢吗", "target": "843. 猜猜这个单词"}, {"source": "810. 黑板异或游戏", "target": "1927. 求和游戏"}, {"source": "810. 黑板异或游戏", "target": "2038. 如果相邻两个颜色均相同则删除当前颜色"}, {"source": "843. 猜猜这个单词", "target": "1561. 你可以获得的最大硬币数目"}, {"source": "1561. 你可以获得的最大硬币数目", "target": "1728. 猫和老鼠 II"}]}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>深度优先搜索</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "94", "link": "https://leetcode.cn/problems/binary-tree-inorder-traversal/", "name": "94. 二叉树的中序遍历"}, {"frontId": "98", "link": "https://leetcode.cn/problems/validate-binary-search-tree/", "name": "98. 验证二叉搜索树"}, {"frontId": "99", "link": "https://leetcode.cn/problems/recover-binary-search-tree/", "name": "99. 恢复二叉搜索树"}, {"frontId": "100", "link": "https://leetcode.cn/problems/same-tree/", "name": "100. 相同的树"}, {"frontId": "101", "link": "https://leetcode.cn/problems/symmetric-tree/", "name": "101. 对称二叉树"}, {"frontId": "104", "link": "https://leetcode.cn/problems/maximum-depth-of-binary-tree/", "name": "104. 二叉树的最大深度"}, {"frontId": "110", "link": "https://leetcode.cn/problems/balanced-binary-tree/", "name": "110. 平衡二叉树"}, {"frontId": "111", "link": "https://leetcode.cn/problems/minimum-depth-of-binary-tree/", "name": "111. 二叉树的最小深度"}, {"frontId": "112", "link": "https://leetcode.cn/problems/path-sum/", "name": "112. 路径总和"}, {"frontId": "113", "link": "https://leetcode.cn/problems/path-sum-ii/", "name": "113. 路径总和 II"}, {"frontId": "114", "link": "https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/", "name": "114. 二叉树展开为链表"}, {"frontId": "116", "link": "https://leetcode.cn/problems/populating-next-right-pointers-in-each-node/", "name": "116. 填充每个节点的下一个右侧节点指针"}, {"frontId": "117", "link": "https://leetcode.cn/problems/populating-next-right-pointers-in-each-node-ii/", "name": "117. 填充每个节点的下一个右侧节点指针 II"}, {"frontId": "124", "link": "https://leetcode.cn/problems/binary-tree-maximum-path-sum/", "name": "124. 二叉树中的最大路径和"}, {"frontId": "129", "link": "https://leetcode.cn/problems/sum-root-to-leaf-numbers/", "name": "129. 求根节点到叶节点数字之和"}, {"frontId": "130", "link": "https://leetcode.cn/problems/surrounded-regions/", "name": "130. 被围绕的区域"}, {"frontId": "133", "link": "https://leetcode.cn/problems/clone-graph/", "name": "133. 克隆图"}, {"frontId": "144", "link": "https://leetcode.cn/problems/binary-tree-preorder-traversal/", "name": "144. 二叉树的前序遍历"}, {"frontId": "145", "link": "https://leetcode.cn/problems/binary-tree-postorder-traversal/", "name": "145. 二叉树的后序遍历"}, {"frontId": "199", "link": "https://leetcode.cn/problems/binary-tree-right-side-view/", "name": "199. 二叉树的右视图"}, {"frontId": "332", "link": "https://leetcode.cn/problems/reconstruct-itinerary/", "name": "332. 重新安排行程"}, {"frontId": "417", "link": "https://leetcode.cn/problems/pacific-atlantic-water-flow/", "name": "417. 太平洋大西洋水流问题"}, {"frontId": "449", "link": "https://leetcode.cn/problems/serialize-and-deserialize-bst/", "name": "449. 序列化和反序列化二叉搜索树"}, {"frontId": "463", "link": "https://leetcode.cn/problems/island-perimeter/", "name": "463. 岛屿的周长"}, {"frontId": "472", "link": "https://leetcode.cn/problems/concatenated-words/", "name": "472. 连接词"}, {"frontId": "514", "link": "https://leetcode.cn/problems/freedom-trail/", "name": "514. 自由之路"}, {"frontId": "671", "link": "https://leetcode.cn/problems/second-minimum-node-in-a-binary-tree/", "name": "671. 二叉树中第二小的节点"}, {"frontId": "672", "link": "https://leetcode.cn/problems/bulb-switcher-ii/", "name": "672. 灯泡开关 Ⅱ"}, {"frontId": "690", "link": "https://leetcode.cn/problems/employee-importance/", "name": "690. 员工的重要性"}, {"frontId": "749", "link": "https://leetcode.cn/problems/contain-virus/", "name": "749. 隔离病毒"}], "links": []}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

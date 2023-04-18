@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>递归</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "2", "link": "https://leetcode.cn/problems/add-two-numbers/", "name": "2. 两数相加"}, {"frontId": "10", "link": "https://leetcode.cn/problems/regular-expression-matching/", "name": "10. 正则表达式匹配"}, {"frontId": "21", "link": "https://leetcode.cn/problems/merge-two-sorted-lists/", "name": "21. 合并两个有序链表"}, {"frontId": "24", "link": "https://leetcode.cn/problems/swap-nodes-in-pairs/", "name": "24. 两两交换链表中的节点"}, {"frontId": "25", "link": "https://leetcode.cn/problems/reverse-nodes-in-k-group/", "name": "25. K 个一组翻转链表"}, {"frontId": "44", "link": "https://leetcode.cn/problems/wildcard-matching/", "name": "44. 通配符匹配"}, {"frontId": "50", "link": "https://leetcode.cn/problems/powx-n/", "name": "50. Pow(x, n)"}, {"frontId": "60", "link": "https://leetcode.cn/problems/permutation-sequence/", "name": "60. 排列序列"}, {"frontId": "143", "link": "https://leetcode.cn/problems/reorder-list/", "name": "143. 重排链表"}, {"frontId": "203", "link": "https://leetcode.cn/problems/remove-linked-list-elements/", "name": "203. 移除链表元素"}, {"frontId": "206", "link": "https://leetcode.cn/problems/reverse-linked-list/", "name": "206. 反转链表"}, {"frontId": "231", "link": "https://leetcode.cn/problems/power-of-two/", "name": "231. 2 的幂"}, {"frontId": "233", "link": "https://leetcode.cn/problems/number-of-digit-one/", "name": "233. 数字 1 的个数"}, {"frontId": "234", "link": "https://leetcode.cn/problems/palindrome-linked-list/", "name": "234. 回文链表"}, {"frontId": "241", "link": "https://leetcode.cn/problems/different-ways-to-add-parentheses/", "name": "241. 为运算表达式设计优先级"}, {"frontId": "273", "link": "https://leetcode.cn/problems/integer-to-english-words/", "name": "273. 整数转换英文表示"}, {"frontId": "326", "link": "https://leetcode.cn/problems/power-of-three/", "name": "326. 3 的幂"}, {"frontId": "344", "link": "https://leetcode.cn/problems/reverse-string/", "name": "344. 反转字符串"}, {"frontId": "390", "link": "https://leetcode.cn/problems/elimination-game/", "name": "390. 消除游戏"}, {"frontId": "394", "link": "https://leetcode.cn/problems/decode-string/", "name": "394. 字符串解码"}, {"frontId": "224", "link": "https://leetcode.cn/problems/basic-calculator/", "name": "224. 基本计算器"}, {"frontId": "342", "link": "https://leetcode.cn/problems/power-of-four/", "name": "342. 4的幂"}, {"frontId": "736", "link": "https://leetcode.cn/problems/parse-lisp-expression/", "name": "736. Lisp 语法解析"}, {"frontId": "770", "link": "https://leetcode.cn/problems/basic-calculator-iv/", "name": "770. 基本计算器 IV"}, {"frontId": "779", "link": "https://leetcode.cn/problems/k-th-symbol-in-grammar/", "name": "779. 第K个语法符号"}, {"frontId": "894", "link": "https://leetcode.cn/problems/all-possible-full-binary-trees/", "name": "894. 所有可能的真二叉树"}, {"frontId": "1106", "link": "https://leetcode.cn/problems/parsing-a-boolean-expression/", "name": "1106. 解析布尔表达式"}, {"frontId": "1545", "link": "https://leetcode.cn/problems/find-kth-bit-in-nth-binary-string/", "name": "1545. 找出第 N 个二进制字符串中的第 K 位"}, {"frontId": "1808", "link": "https://leetcode.cn/problems/maximize-number-of-nice-divisors/", "name": "1808. 好因子的最大数目"}, {"frontId": "1823", "link": "https://leetcode.cn/problems/find-the-winner-of-the-circular-game/", "name": "1823. 找出游戏的获胜者"}], "links": [{"source": "206. 反转链表", "target": "2. 两数相加"}, {"source": "206. 反转链表", "target": "231. 2 的幂"}, {"source": "206. 反转链表", "target": "60. 排列序列"}, {"source": "2. 两数相加", "target": "21. 合并两个有序链表"}, {"source": "21. 合并两个有序链表", "target": "24. 两两交换链表中的节点"}, {"source": "24. 两两交换链表中的节点", "target": "25. K 个一组翻转链表"}, {"source": "231. 2 的幂", "target": "50. Pow(x, n)"}, {"source": "60. 排列序列", "target": "233. 数字 1 的个数"}, {"source": "231. 2 的幂", "target": "326. 3 的幂"}, {"source": "326. 3 的幂", "target": "342. 4的幂"}, {"source": "206. 反转链表", "target": "241. 为运算表达式设计优先级"}, {"source": "241. 为运算表达式设计优先级", "target": "224. 基本计算器"}, {"source": "224. 基本计算器", "target": "770. 基本计算器 IV"}, {"source": "60. 排列序列", "target": "779. 第K个语法符号"}, {"source": "779. 第K个语法符号", "target": "1545. 找出第 N 个二进制字符串中的第 K 位"}]}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

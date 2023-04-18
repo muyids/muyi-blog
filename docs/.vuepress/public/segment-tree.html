@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>线段树</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "218", "link": "https://leetcode.cn/problems/the-skyline-problem/", "name": "218. 天际线问题"}, {"frontId": "307", "link": "https://leetcode.cn/problems/range-sum-query-mutable/", "name": "307. 区域和检索 - 数组可修改"}, {"frontId": "315", "link": "https://leetcode.cn/problems/count-of-smaller-numbers-after-self/", "name": "315. 计算右侧小于当前元素的个数"}, {"frontId": "406", "link": "https://leetcode.cn/problems/queue-reconstruction-by-height/", "name": "406. 根据身高重建队列"}, {"frontId": "493", "link": "https://leetcode.cn/problems/reverse-pairs/", "name": "493. 翻转对"}, {"frontId": "673", "link": "https://leetcode.cn/problems/number-of-longest-increasing-subsequence/", "name": "673. 最长递增子序列的个数"}, {"frontId": "729", "link": "https://leetcode.cn/problems/my-calendar-i/", "name": "729. 我的日程安排表 I"}, {"frontId": "1157", "link": "https://leetcode.cn/problems/online-majority-element-in-subarray/", "name": "1157. 子数组中占绝大多数的元素"}, {"frontId": "2080", "link": "https://leetcode.cn/problems/range-frequency-queries/", "name": "2080. 区间内查询数字的频率"}, {"frontId": "2276", "link": "https://leetcode.cn/problems/count-integers-in-intervals/", "name": "2276. 统计区间中的整数数目"}, {"frontId": "LCP 09", "link": "https://leetcode.cn/problems/zui-xiao-tiao-yue-ci-shu/", "name": "LCP 09. 最小跳跃次数"}, {"frontId": "剑指 Offer 51", "link": "https://leetcode.cn/problems/shu-zu-zhong-de-ni-xu-dui-lcof/", "name": "剑指 Offer 51. 数组中的逆序对"}, {"frontId": "剑指 Offer II 058", "link": "https://leetcode.cn/problems/fi9suh/", "name": "剑指 Offer II 058. 日程表"}, {"frontId": "327", "link": "https://leetcode.cn/problems/count-of-range-sum/", "name": "327. 区间和的个数"}, {"frontId": "699", "link": "https://leetcode.cn/problems/falling-squares/", "name": "699. 掉落的方块"}, {"frontId": "715", "link": "https://leetcode.cn/problems/range-module/", "name": "715. Range 模块"}, {"frontId": "731", "link": "https://leetcode.cn/problems/my-calendar-ii/", "name": "731. 我的日程安排表 II"}, {"frontId": "732", "link": "https://leetcode.cn/problems/my-calendar-iii/", "name": "732. 我的日程安排表 III"}], "links": []}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

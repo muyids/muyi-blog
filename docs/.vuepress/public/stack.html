@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>栈</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "20", "link": "https://leetcode.cn/problems/valid-parentheses/", "name": "20. 有效的括号"}, {"frontId": "32", "link": "https://leetcode.cn/problems/longest-valid-parentheses/", "name": "32. 最长有效括号"}, {"frontId": "42", "link": "https://leetcode.cn/problems/trapping-rain-water/", "name": "42. 接雨水"}, {"frontId": "71", "link": "https://leetcode.cn/problems/simplify-path/", "name": "71. 简化路径"}, {"frontId": "84", "link": "https://leetcode.cn/problems/largest-rectangle-in-histogram/", "name": "84. 柱状图中最大的矩形"}, {"frontId": "85", "link": "https://leetcode.cn/problems/maximal-rectangle/", "name": "85. 最大矩形"}, {"frontId": "94", "link": "https://leetcode.cn/problems/binary-tree-inorder-traversal/", "name": "94. 二叉树的中序遍历"}, {"frontId": "114", "link": "https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/", "name": "114. 二叉树展开为链表"}, {"frontId": "143", "link": "https://leetcode.cn/problems/reorder-list/", "name": "143. 重排链表"}, {"frontId": "144", "link": "https://leetcode.cn/problems/binary-tree-preorder-traversal/", "name": "144. 二叉树的前序遍历"}, {"frontId": "145", "link": "https://leetcode.cn/problems/binary-tree-postorder-traversal/", "name": "145. 二叉树的后序遍历"}, {"frontId": "150", "link": "https://leetcode.cn/problems/evaluate-reverse-polish-notation/", "name": "150. 逆波兰表达式求值"}, {"frontId": "155", "link": "https://leetcode.cn/problems/min-stack/", "name": "155. 最小栈"}, {"frontId": "173", "link": "https://leetcode.cn/problems/binary-search-tree-iterator/", "name": "173. 二叉搜索树迭代器"}, {"frontId": "225", "link": "https://leetcode.cn/problems/implement-stack-using-queues/", "name": "225. 用队列实现栈"}, {"frontId": "227", "link": "https://leetcode.cn/problems/basic-calculator-ii/", "name": "227. 基本计算器 II"}, {"frontId": "232", "link": "https://leetcode.cn/problems/implement-queue-using-stacks/", "name": "232. 用栈实现队列"}, {"frontId": "234", "link": "https://leetcode.cn/problems/palindrome-linked-list/", "name": "234. 回文链表"}, {"frontId": "316", "link": "https://leetcode.cn/problems/remove-duplicate-letters/", "name": "316. 去除重复字母"}, {"frontId": "341", "link": "https://leetcode.cn/problems/flatten-nested-list-iterator/", "name": "341. 扁平化嵌套列表迭代器"}, {"frontId": "224", "link": "https://leetcode.cn/problems/basic-calculator/", "name": "224. 基本计算器"}, {"frontId": "321", "link": "https://leetcode.cn/problems/create-maximum-number/", "name": "321. 拼接最大数"}, {"frontId": "331", "link": "https://leetcode.cn/problems/verify-preorder-serialization-of-a-binary-tree/", "name": "331. 验证二叉树的前序序列化"}, {"frontId": "591", "link": "https://leetcode.cn/problems/tag-validator/", "name": "591. 标签验证器"}, {"frontId": "636", "link": "https://leetcode.cn/problems/exclusive-time-of-functions/", "name": "636. 函数的独占时间"}, {"frontId": "678", "link": "https://leetcode.cn/problems/valid-parenthesis-string/", "name": "678. 有效的括号字符串"}, {"frontId": "736", "link": "https://leetcode.cn/problems/parse-lisp-expression/", "name": "736. Lisp 语法解析"}, {"frontId": "770", "link": "https://leetcode.cn/problems/basic-calculator-iv/", "name": "770. 基本计算器 IV"}, {"frontId": "853", "link": "https://leetcode.cn/problems/car-fleet/", "name": "853. 车队"}, {"frontId": "880", "link": "https://leetcode.cn/problems/decoded-string-at-index/", "name": "880. 索引处的解码字符串"}, {"frontId": "496", "link": "https://leetcode.cn/problems/next-greater-element-i/", "name": "496. 下一个更大元素 I"}, {"frontId": "739", "link": "https://leetcode.cn/problems/daily-temperatures/", "name": "739. 每日温度"}, {"frontId": "503", "link": "https://leetcode.cn/problems/next-greater-element-ii/", "name": "503. 下一个更大元素 II"}], "links": [{"source": "20. 有效的括号", "target": "678. 有效的括号字符串"}, {"source": "20. 有效的括号", "target": "94. 二叉树的中序遍历"}, {"source": "20. 有效的括号", "target": "496. 下一个更大元素 I"}, {"source": "20. 有效的括号", "target": "71. 简化路径"}, {"source": "20. 有效的括号", "target": "739. 每日温度"}, {"source": "678. 有效的括号字符串", "target": "32. 最长有效括号"}, {"source": "94. 二叉树的中序遍历", "target": "150. 逆波兰表达式求值"}, {"source": "150. 逆波兰表达式求值", "target": "224. 基本计算器"}, {"source": "224. 基本计算器", "target": "227. 基本计算器 II"}, {"source": "496. 下一个更大元素 I", "target": "503. 下一个更大元素 II"}, {"source": "739. 每日温度", "target": "42. 接雨水"}, {"source": "42. 接雨水", "target": "84. 柱状图中最大的矩形"}]}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>

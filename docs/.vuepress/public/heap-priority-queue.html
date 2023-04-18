@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>堆（优先队列）</title>
+    <script src="echarts.5.3.3.min.js"></script>
+    <script src="problems.js "></script>
+    <style type="text/css">
+        .btn-add,
+        .btn-sub {
+            width: 1.5rem; height: 1.5rem;
+            border: 1px solid gray;
+            background: linear-gradient(currentColor, currentColor) no-repeat center/.875em 2px,
+                        linear-gradient(currentColor, currentColor) no-repeat center/2px .875em,
+                        ghostwhite;
+            color: dimgray;
+        }
+        .btn-sub {
+            background-size: .875em 2px, 0;
+        }
+        .btn-group {
+            position: absolute;
+            transition: .5s ease;
+            top: 95%;
+            left: 95%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:800px; background-color: beige;"></div>
+
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var data = {"data": [{"frontId": "23", "link": "https://leetcode.cn/problems/merge-k-sorted-lists/", "name": "23. 合并K个升序链表"}, {"frontId": "215", "link": "https://leetcode.cn/problems/kth-largest-element-in-an-array/", "name": "215. 数组中的第K个最大元素"}, {"frontId": "218", "link": "https://leetcode.cn/problems/the-skyline-problem/", "name": "218. 天际线问题"}, {"frontId": "239", "link": "https://leetcode.cn/problems/sliding-window-maximum/", "name": "239. 滑动窗口最大值"}, {"frontId": "264", "link": "https://leetcode.cn/problems/ugly-number-ii/", "name": "264. 丑数 II"}, {"frontId": "295", "link": "https://leetcode.cn/problems/find-median-from-data-stream/", "name": "295. 数据流的中位数"}, {"frontId": "347", "link": "https://leetcode.cn/problems/top-k-frequent-elements/", "name": "347. 前 K 个高频元素"}, {"frontId": "355", "link": "https://leetcode.cn/problems/design-twitter/", "name": "355. 设计推特"}, {"frontId": "378", "link": "https://leetcode.cn/problems/kth-smallest-element-in-a-sorted-matrix/", "name": "378. 有序矩阵中第 K 小的元素"}, {"frontId": "407", "link": "https://leetcode.cn/problems/trapping-rain-water-ii/", "name": "407. 接雨水 II"}, {"frontId": "451", "link": "https://leetcode.cn/problems/sort-characters-by-frequency/", "name": "451. 根据字符出现频率排序"}, {"frontId": "502", "link": "https://leetcode.cn/problems/ipo/", "name": "502. IPO"}, {"frontId": "621", "link": "https://leetcode.cn/problems/task-scheduler/", "name": "621. 任务调度器"}, {"frontId": "632", "link": "https://leetcode.cn/problems/smallest-range-covering-elements-from-k-lists/", "name": "632. 最小区间"}, {"frontId": "658", "link": "https://leetcode.cn/problems/find-k-closest-elements/", "name": "658. 找到 K 个最接近的元素"}, {"frontId": "659", "link": "https://leetcode.cn/problems/split-array-into-consecutive-subsequences/", "name": "659. 分割数组为连续子序列"}, {"frontId": "692", "link": "https://leetcode.cn/problems/top-k-frequent-words/", "name": "692. 前K个高频单词"}, {"frontId": "743", "link": "https://leetcode.cn/problems/network-delay-time/", "name": "743. 网络延迟时间"}, {"frontId": "703", "link": "https://leetcode.cn/problems/kth-largest-element-in-a-stream/", "name": "703. 数据流中的第 K 大元素"}, {"frontId": "778", "link": "https://leetcode.cn/problems/swim-in-rising-water/", "name": "778. 水位上升的泳池中游泳"}, {"frontId": "373", "link": "https://leetcode.cn/problems/find-k-pairs-with-smallest-sums/", "name": "373. 查找和最小的 K 对数字"}, {"frontId": "420", "link": "https://leetcode.cn/problems/strong-password-checker/", "name": "420. 强密码检验器"}, {"frontId": "480", "link": "https://leetcode.cn/problems/sliding-window-median/", "name": "480. 滑动窗口中位数"}, {"frontId": "506", "link": "https://leetcode.cn/problems/relative-ranks/", "name": "506. 相对名次"}, {"frontId": "630", "link": "https://leetcode.cn/problems/course-schedule-iii/", "name": "630. 课程表 III"}, {"frontId": "675", "link": "https://leetcode.cn/problems/cut-off-trees-for-golf-event/", "name": "675. 为高尔夫比赛砍树"}, {"frontId": "767", "link": "https://leetcode.cn/problems/reorganize-string/", "name": "767. 重构字符串"}, {"frontId": "786", "link": "https://leetcode.cn/problems/k-th-smallest-prime-fraction/", "name": "786. 第 K 个最小的素数分数"}, {"frontId": "862", "link": "https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/", "name": "862. 和至少为 K 的最短子数组"}, {"frontId": "871", "link": "https://leetcode.cn/problems/minimum-number-of-refueling-stops/", "name": "871. 最低加油次数"}], "links": [{"source": "23. 合并K个升序链表", "target": "295. 数据流的中位数"}, {"source": "23. 合并K个升序链表", "target": "215. 数组中的第K个最大元素"}, {"source": "215. 数组中的第K个最大元素", "target": "347. 前 K 个高频元素"}, {"source": "347. 前 K 个高频元素", "target": "692. 前K个高频单词"}, {"source": "23. 合并K个升序链表", "target": "621. 任务调度器"}, {"source": "215. 数组中的第K个最大元素", "target": "378. 有序矩阵中第 K 小的元素"}]}
+
+        data.data.forEach(e => {
+            e.level = all_problems[e.frontId]['l']
+            e.status = all_problems[e.frontId]['s']
+            e.draggable = true
+            if (all_problems[e.frontId] && all_problems[e.frontId]['s']) {
+                e['category'] = 0
+            }
+        })
+        data.links.forEach(e => {
+            e.value = ''
+        })
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter(params) {
+                    var data = params.data
+                    s = `${data.name}<br/>
+${data.level == 1 ? '容易' : data.level == 2 ? '中等' : '困难'}<br />
+${data.status == 1 ? "AC" : "NotAC"}`
+                    return s;
+                }
+            },
+            focusNodeAdjacency: true,
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            },
+            legend: {
+                padding: [
+                    5,  // up
+                    10, // right
+                    5,  // down
+                    10, // left
+                ]
+            },
+            series: [{
+                type: 'graph', //关系图
+                layout: 'force',//力引导布局
+                force: {
+                    repulsion: 500, //斥力因子，值越大，斥力越大
+                    // edgeLength: [90,170],//连接线长度，连接线值越大，长度越短
+                    // layoutAnimation: true//力引导布局会在多次迭代后稳定
+                },
+                symbolSize: 30, //图形大小
+                zoom: 1, // 当前视角缩放比例
+                roam: true, //开启鼠标缩放和平移漫游
+                nodeScaleRatio: 0.6, //鼠标漫游缩放时节点相应缩放比例
+                draggable: true, //可拖拽
+                // focusNodeAdjacency: false,//鼠标移动到节点上时突出显示节点和邻接节点
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                        position: 'right',
+                        formatter: '{b}'
+                    }
+                },
+                lineStyle: {
+                    color: 'source',
+                    width: 3,
+                    // curveness: 0.3
+                },
+                edgeSymbol: ['circle', 'arrow'], // 边两端标记类型
+                edgeSymbolSize: [5, 10], // 箭头大小
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 10
+                        },
+                        formatter: "{c}"
+                    }
+                },
+                categories: [ // 节点分类
+                    {
+                        name: '已通过',
+                        itemStyle: {
+                            normal: {
+                                color: '#02ed45'
+                            }
+                        }
+                    }, {
+                        name: '已解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#346beb",
+                            }
+                        }
+                    }, {
+                        name: '未解锁',
+                        itemStyle: {
+                            normal: {
+                                color: "#d0eb34",
+                            }
+                        }
+                    }
+                ],
+                data: data.data,
+                links: data.links
+            }]
+        };
+        myChart.setOption(option);
+
+        myChart.on('click', (param) => {
+            console.log(param.data);
+            window.open(param.data.link, '_blank');
+        });
+        myChart.on('graphroam', function (params) {
+
+        })
+
+        function changeZoom(added) {
+            if (added < -0.5 || added > 0.5) {
+                return
+            }
+            this.option.series[0].zoom += added
+            this.myChart.setOption(this.option)
+        }
+
+        window.onresize = function () {
+            myChart.resize();
+        };
+    </script>
+
+    <div class="btn-group">
+        <button class="btn-add" onclick="changeZoom(0.2)"></button>
+        <button class="btn-sub" onclick="changeZoom(-0.2)"></button>
+    </div>
+</body>
+
+</html>
